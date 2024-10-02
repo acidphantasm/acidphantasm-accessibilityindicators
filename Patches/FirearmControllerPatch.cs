@@ -4,6 +4,7 @@ using System.Reflection;
 using UnityEngine;
 using EFT;
 using acidphantasm_accessibilityindicators.IndicatorUI;
+using acidphantasm_accessibilityindicators.Helpers;
 
 namespace acidphantasm_accessibilityindicators.Patches
 {
@@ -23,6 +24,10 @@ namespace acidphantasm_accessibilityindicators.Patches
             if (__instance == null) return;
 
             Player player = (Player)playerInfo.GetValue(__instance);
+
+            if (player.IsYourPlayer
+                || !Indicators.enable
+                || (!player.IsAI && Utils.IsGroupedWithMainPlayer(player) && !Indicators.showTeammates)) return;
 
             if (!player.IsYourPlayer) Indicators.PrepareShot(shotPosition, player.AccountId);
         }
