@@ -1,8 +1,5 @@
-﻿using acidphantasm_accessibilityindicators.IndicatorUI;
-using acidphantasm_accessibilityindicators.Helpers;
-using BepInEx;
-using EFT;
-using HarmonyLib;
+﻿using HarmonyLib;
+using SPT.Reflection.Patching;
 using System.Reflection;
 using UnityEngine;
 
