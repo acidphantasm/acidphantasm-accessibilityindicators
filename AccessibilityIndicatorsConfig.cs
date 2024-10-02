@@ -7,6 +7,9 @@ namespace acidphantasm_accessibilityindicators
 {
     internal static class AccessibilityIndicatorsConfig
     {
+        private const string TogglesTitle = "Toggles";
+        public static ConfigEntry<bool> enable;
+        public static ConfigEntry<bool> showTeammates;
         private const string ConfigShotsTitle = "Shots Configuration";
         public static ConfigEntry<float> maxDistanceShots;
         public static ConfigEntry<float> fadeTimeShots;
@@ -18,6 +21,9 @@ namespace acidphantasm_accessibilityindicators
 
         public static void InitConfig(ConfigFile config)
         {
+            enable = config.Bind(TogglesTitle, "Enable/Disable", true, new ConfigDescription("Max distance from sound to show indicator."));
+            showTeammates = config.Bind(TogglesTitle, "Show Teammates", false, new ConfigDescription("If you enjoy Swedish Coffee, this toggle is for you. Toggle showing indicators for teammates."));
+
             maxDistanceShots = config.Bind(ConfigShotsTitle, "Max Distance", 150f, new ConfigDescription("Max distance from sound to show indicator.", new AcceptableValueRange<float>(1f, 250f)));
             fadeTimeShots = config.Bind(ConfigShotsTitle, "Fade Time", 1f, new ConfigDescription("Amount of time in seconds for indicator to fade.", new AcceptableValueRange<float>(0.1f, 2f)));
             poolObjectsShots = config.Bind(ConfigShotsTitle, "Pool Objects", 50, new ConfigDescription("Number of indicator clones to make. Increase this if indicators are not showing when they should.", new AcceptableValueRange<int>(25, 100)));
@@ -26,6 +32,9 @@ namespace acidphantasm_accessibilityindicators
             fadeTimeSteps = config.Bind(ConfigStepsTitle, "Fade Time", 0.5f, new ConfigDescription("Amount of time in seconds for indicator to fade.", new AcceptableValueRange<float>(0.1f, 2f)));
             poolObjectsSteps = config.Bind(ConfigStepsTitle, "Pool Objects", 50, new ConfigDescription("Number of indicator clones to make. Increase this if indicators are not showing when they should.", new AcceptableValueRange<int>(25, 100)));
 
+            Indicators.enable = enable.Value;
+            Indicators.showTeammates = showTeammates.Value;
+
             Indicators.maxDistanceShots = maxDistanceShots.Value;
             Indicators.fadeTimeShots = fadeTimeShots.Value;
             Indicators.poolObjectsShots = poolObjectsShots.Value;
@@ -33,6 +42,9 @@ namespace acidphantasm_accessibilityindicators
             Indicators.maxDistanceSteps = maxDistanceSteps.Value;
             Indicators.fadeTimeSteps = fadeTimeSteps.Value;
             Indicators.poolObjectsSteps = poolObjectsSteps.Value;
+
+            enable.SettingChanged += Accessibility_SettingChanged;
+            showTeammates.SettingChanged += Accessibility_SettingChanged;
 
             maxDistanceShots.SettingChanged += Accessibility_SettingChanged;
             fadeTimeShots.SettingChanged += Accessibility_SettingChanged;
@@ -45,6 +57,9 @@ namespace acidphantasm_accessibilityindicators
 
         private static void Accessibility_SettingChanged(object sender, EventArgs e)
         {
+            Indicators.enable = enable.Value;
+            Indicators.showTeammates = showTeammates.Value;
+
             Indicators.maxDistanceShots = maxDistanceShots.Value;
             Indicators.fadeTimeShots = fadeTimeShots.Value;
             Indicators.poolObjectsShots = poolObjectsShots.Value;

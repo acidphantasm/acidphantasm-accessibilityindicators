@@ -112,6 +112,7 @@
     <Compile Include="Helpers\DebugGizmos.cs" />
     <Compile Include="Helpers\ObjectIDInfo.cs" />
     <Compile Include="Helpers\ObjectPool.cs" />
+    <Compile Include="Helpers\Utils.cs" />
     <Compile Include="IndicatorUI\Indicators.cs" />
     <Compile Include="AccessibilityIndicatorsConfig.cs" />
     <Compile Include="Patches\FirearmControllerPatch.cs" />

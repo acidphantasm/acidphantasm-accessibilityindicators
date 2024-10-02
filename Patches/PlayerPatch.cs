@@ -1,17 +1,11 @@
-﻿using acidphantasm_accessibilityindicators.IndicatorUI;
+﻿using acidphantasm_accessibilityindicators.Helpers;
+using acidphantasm_accessibilityindicators.IndicatorUI;
 using Audio.Data;
 using EFT;
-using EFT.NextObservedPlayer;
 using HarmonyLib;
 using SPT.Reflection.Patching;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
-using static EFT.Player;
 
 namespace acidphantasm_accessibilityindicators.Patches
 {
@@ -27,7 +21,10 @@ namespace acidphantasm_accessibilityindicators.Patches
         [PatchPostfix]
         static void PatchPostfix(Player __instance, EAudioMovementState movementState)
         {
-            if (__instance == null || __instance.IsYourPlayer) return;
+            if (__instance == null 
+                || __instance.IsYourPlayer 
+                || !Indicators.enable
+                || (!__instance.IsAI && Utils.IsGroupedWithMainPlayer(__instance) && !Indicators.showTeammates)) return;
 
             Vector3 position = __instance.Position;
             float distance = (float)distanceInfo.GetValue(__instance);
@@ -47,7 +44,10 @@ namespace acidphantasm_accessibilityindicators.Patches
         [PatchPostfix]
         static void PatchPostfix(Player __instance)
         {
-            if (__instance == null || __instance.IsYourPlayer) return;
+            if (__instance == null
+                || __instance.IsYourPlayer
+                || !Indicators.enable
+                || (!__instance.IsAI && Utils.IsGroupedWithMainPlayer(__instance) && !Indicators.showTeammates)) return;
 
             Vector3 position = __instance.Position;
             float distance = (float)distanceInfo.GetValue(__instance);
@@ -68,14 +68,16 @@ namespace acidphantasm_accessibilityindicators.Patches
         [PatchPostfix]
         static void PatchPostfix(Player __instance)
         {
-            if (__instance == null || __instance.IsYourPlayer) return;
+            if (__instance == null
+                || __instance.IsYourPlayer
+                || !Indicators.enable
+                || (!__instance.IsAI && Utils.IsGroupedWithMainPlayer(__instance) && !Indicators.showTeammates)) return;
 
             if (__instance.CurrentState.Name is EPlayerState.Sprint)
             {
                 Vector3 position = __instance.Position;
                 float distance = (float)distanceInfo.GetValue(__instance);
                 var movementState = EAudioMovementState.Sprint;
-
                 Indicators.PrepareStep(movementState, position, distance, __instance.AccountId);
             }
 

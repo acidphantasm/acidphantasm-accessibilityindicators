@@ -1,25 +1,11 @@
-﻿using BepInEx;
-using Comfort.Common;
+﻿using Comfort.Common;
 using EFT;
-using EFT.UI;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.UI;
-using UnityEditor;
-using System.Collections;
 using acidphantasm_accessibilityindicators.Patches;
 using acidphantasm_accessibilityindicators.Helpers;
 using static acidphantasm_accessibilityindicators.Helpers.DebugGizmos;
 using Audio.Data;
-using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
-using static System.Net.Mime.MediaTypeNames;
 using Image = UnityEngine.UI.Image;
-using static acidphantasm_accessibilityindicators.Helpers.DebugGizmos.TempCoroutine;
 
 
 namespace acidphantasm_accessibilityindicators.IndicatorUI
@@ -38,6 +24,8 @@ namespace acidphantasm_accessibilityindicators.IndicatorUI
         public static float fadeTimeSteps;
         public static int poolObjectsShots;
         public static int poolObjectsSteps;
+        public static bool enable;
+        public static bool showTeammates;
 
         public static void BuildHUD()
         {

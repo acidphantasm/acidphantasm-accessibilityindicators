@@ -1,11 +1,5 @@
-﻿using BepInEx;
-using BepInEx.Logging;
-using EFT;
-using System.Collections;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections;
 using UnityEngine;
-using UnityEngine.AI;
 using Color = UnityEngine.Color;
 using Image = UnityEngine.UI.Image;
 

@@ -1,16 +1,11 @@
 ﻿using BepInEx.Logging;
 using BepInEx;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using acidphantasm_accessibilityindicators.Patches;
 using acidphantasm_accessibilityindicators.IndicatorUI;
 using System.IO;
 using UnityEngine;
 using System.Reflection;
-using System.Configuration.Assemblies;
 
 namespace acidphantasm_accessibilityindicators
 {

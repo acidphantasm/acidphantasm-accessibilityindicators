@@ -1,15 +1,8 @@
 ﻿using SPT.Reflection.Patching;
 using HarmonyLib;
 using System.Reflection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using EFT.UI;
 using UnityEngine;
 using EFT;
-using BepInEx.Logging;
 using acidphantasm_accessibilityindicators.IndicatorUI;
 
 namespace acidphantasm_accessibilityindicators.Patches

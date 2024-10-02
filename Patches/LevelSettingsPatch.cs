@@ -3,14 +3,7 @@ using acidphantasm_accessibilityindicators.Helpers;
 using BepInEx;
 using EFT;
 using HarmonyLib;
-using SPT.Reflection.Patching;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Reflection.Emit;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace acidphantasm_accessibilityindicators.Patches
