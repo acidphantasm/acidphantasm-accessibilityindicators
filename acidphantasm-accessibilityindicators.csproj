@@ -127,6 +127,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>copy "$(TargetPath)" "$(ProjectDir)\..\..\BepInEx\plugins\acidphantasm-accessibilityindicators\$(TargetFileName)"
-xcopy "$(ProjectDir)Assets" "$(ProjectDir)\..\..\BepInEx\plugins\acidphantasm-accessibilityindicators\assets\" /S /Y</PostBuildEvent>
+xcopy "$(ProjectDir)Assets" "$(ProjectDir)\..\..\BepInEx\plugins\acidphantasm-accessibilityindicators\assets\" /S /Y
+xcopy "$(ProjectDir)LICENSE" "$(ProjectDir)\..\..\BepInEx\plugins\acidphantasm-accessibilityindicators\" /S /Y</PostBuildEvent>
   </PropertyGroup>
 </Project>
