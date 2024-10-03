@@ -65,7 +65,7 @@ namespace acidphantasm_accessibilityindicators.IndicatorUI
 
             if (shotDistance <= maxDistanceShots) DrawShotIndicator(realShotAngle, shotDistance, id);
 
-            Plugin.LogSource.LogInfo($"PlayerLookDir: {playerAngle} | ShotAngle: {realShotAngle} | Distance: {shotDistance}m");
+            //Plugin.LogSource.LogInfo($"PlayerLookDir: {playerAngle} | ShotAngle: {realShotAngle} | Distance: {shotDistance}m");
         }
         public static void PrepareStep(EAudioMovementState movementState, Vector3 position, float distance, string id)
         {
@@ -84,7 +84,7 @@ namespace acidphantasm_accessibilityindicators.IndicatorUI
 
             if (distance <= maxDistanceSteps) DrawStepIndicator(realStepAngle, distance, movementState, id);
 
-            Plugin.LogSource.LogInfo($"Position: {position} | Distance: {distance}m | MovementState: {movementState}");
+            //Plugin.LogSource.LogInfo($"PlayerLookDir: {playerAngle} | StepAngle: {realStepAngle} | Distance: {distance}m | MovementState: {movementState}");
         }
         private static void DrawShotIndicator(float shotAngle, float shotDistance, string id)
         {
@@ -155,14 +155,16 @@ namespace acidphantasm_accessibilityindicators.IndicatorUI
         }
         private static float GetAngle(Vector3 originDirection)
         {
+            var levelSettings = Singleton<LevelSettings>.Instance;
             originDirection.y = 0;
-            var angle = Vector3.SignedAngle(originDirection, LevelSettingsNorthVectorPatch.northVector, Vector3.up);
+            var angle = Vector3.SignedAngle(originDirection, levelSettings.NorthVector, Vector3.up);
             if (angle >= 0) return angle;
             return angle + 360;
         }
         private static float GetLookAngle(Vector3 originAngle)
         {
-            var angle = originAngle.y - LevelSettingsNorthDirectionPatch.northDirection;
+            var levelSettings = Singleton<LevelSettings>.Instance;
+            var angle = originAngle.y - levelSettings.NorthDirection;
 
             if (angle >= 0) return angle;
             return angle + 360;

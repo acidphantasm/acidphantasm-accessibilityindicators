@@ -1,4 +1,5 @@
-﻿using HarmonyLib;
+﻿using EFT;
+using HarmonyLib;
 using SPT.Reflection.Patching;
 using System.Reflection;
 using UnityEngine;
@@ -11,13 +12,14 @@ namespace acidphantasm_accessibilityindicators.Patches
 
         protected override MethodBase GetTargetMethod()
         {
-            return AccessTools.PropertyGetter(typeof(LevelSettings), "NorthVector");
+            return AccessTools.PropertyGetter(typeof(LevelSettings), nameof(LevelSettings.NorthVector));
         }
 
         [PatchPostfix]
-        static void PatchPostfix(LevelSettings __instance, ref Vector3 __result)
+        public static void PatchPostfix(LevelSettings __instance, Vector3 __result)
         {
             if (__instance == null) return;
+            Plugin.LogSource.LogInfo(__result);
             northVector = __result;
         }
     }
@@ -27,13 +29,14 @@ namespace acidphantasm_accessibilityindicators.Patches
 
         protected override MethodBase GetTargetMethod()
         {
-            return AccessTools.PropertyGetter(typeof(LevelSettings), "NorthDirection");
+            return AccessTools.PropertyGetter(typeof(LevelSettings), nameof(LevelSettings.NorthDirection));
         }
 
         [PatchPostfix]
-        static void PatchPostfix(LevelSettings __instance, ref float __result)
+        public static void PatchPostfix(LevelSettings __instance, float __result)
         {
             if (__instance == null) return;
+            Plugin.LogSource.LogInfo(__result);
             northDirection = __result;
         }
     }

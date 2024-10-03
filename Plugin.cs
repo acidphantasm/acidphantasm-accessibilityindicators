@@ -27,9 +27,9 @@ namespace acidphantasm_accessibilityindicators
 
             AccessibilityIndicatorsConfig.InitAAConfig(Config);
 
+            //new LevelSettingsNorthVectorPatch().Enable();
+            //new LevelSettingsNorthDirectionPatch().Enable();
             new FirearmControllerPatch().Enable();
-            new LevelSettingsNorthVectorPatch().Enable();
-            new LevelSettingsNorthDirectionPatch().Enable();
             new PlayerDefaultPlayPatch().Enable();
             new PlayerPlayStepSoundPatch().Enable();
             new PlayerMethod50Patch().Enable();
