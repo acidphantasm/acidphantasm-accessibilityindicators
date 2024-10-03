@@ -25,7 +25,7 @@ namespace acidphantasm_accessibilityindicators
 
             LogSource.LogInfo("[AccessibilityIndicators] loading...");
 
-            AccessibilityIndicatorsConfig.InitConfig(Config);
+            AccessibilityIndicatorsConfig.InitAAConfig(Config);
 
             new FirearmControllerPatch().Enable();
             new LevelSettingsNorthVectorPatch().Enable();

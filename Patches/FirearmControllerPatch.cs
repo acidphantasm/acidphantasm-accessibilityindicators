@@ -27,9 +27,10 @@ namespace acidphantasm_accessibilityindicators.Patches
 
             if (player.IsYourPlayer
                 || !Indicators.enable
+                || !Indicators.enableShots
                 || (!player.IsAI && Utils.IsGroupedWithMainPlayer(player) && !Indicators.showTeammates)) return;
 
-            if (!player.IsYourPlayer) Indicators.PrepareShot(shotPosition, player.AccountId);
+            Indicators.PrepareShot(shotPosition, player.AccountId);
         }
     }
 }

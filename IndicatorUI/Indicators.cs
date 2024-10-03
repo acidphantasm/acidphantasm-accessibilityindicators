@@ -22,10 +22,15 @@ namespace acidphantasm_accessibilityindicators.IndicatorUI
         public static float fadeTimeShots;
         public static float maxDistanceSteps;
         public static float fadeTimeSteps;
+
         public static int poolObjectsShots;
         public static int poolObjectsSteps;
+
         public static bool enable;
         public static bool showTeammates;
+        public static bool enableShots;
+        public static bool enableRunSteps;
+        public static bool enableSprintSteps;
 
         public static void BuildHUD()
         {
@@ -60,7 +65,7 @@ namespace acidphantasm_accessibilityindicators.IndicatorUI
 
             if (shotDistance <= maxDistanceShots) DrawShotIndicator(realShotAngle, shotDistance, id);
 
-            //Plugin.LogSource.LogInfo($"PlayerLookDir: {playerAngle} | ShotAngle: {realShotAngle} | Distance: {shotDistance}m");
+            Plugin.LogSource.LogInfo($"PlayerLookDir: {playerAngle} | ShotAngle: {realShotAngle} | Distance: {shotDistance}m");
         }
         public static void PrepareStep(EAudioMovementState movementState, Vector3 position, float distance, string id)
         {
@@ -79,7 +84,7 @@ namespace acidphantasm_accessibilityindicators.IndicatorUI
 
             if (distance <= maxDistanceSteps) DrawStepIndicator(realStepAngle, distance, movementState, id);
 
-            //Plugin.LogSource.LogInfo($"Position: {position} | Distance: {distance}m | MovementState: {movementState}");
+            Plugin.LogSource.LogInfo($"Position: {position} | Distance: {distance}m | MovementState: {movementState}");
         }
         private static void DrawShotIndicator(float shotAngle, float shotDistance, string id)
         {
@@ -118,9 +123,11 @@ namespace acidphantasm_accessibilityindicators.IndicatorUI
             switch (movementState)
             {
                 case EAudioMovementState.Sprint:
+                    if (!enableSprintSteps) return;
                     pivotIndicator = ObjectPool.GetPooledSprintObject(id);
                     break;
                 case EAudioMovementState.Run:
+                    if (!enableRunSteps) return;
                     pivotIndicator = ObjectPool.GetPooledRunObject(id);
                     break;
                 default:
