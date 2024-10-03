@@ -6,6 +6,7 @@ using acidphantasm_accessibilityindicators.Helpers;
 using static acidphantasm_accessibilityindicators.Helpers.DebugGizmos;
 using Audio.Data;
 using Image = UnityEngine.UI.Image;
+using static acidphantasm_accessibilityindicators.Helpers.DebugGizmos.TempCoroutine;
 
 
 namespace acidphantasm_accessibilityindicators.IndicatorUI
@@ -31,6 +32,9 @@ namespace acidphantasm_accessibilityindicators.IndicatorUI
         public static bool enableShots;
         public static bool enableRunSteps;
         public static bool enableSprintSteps;
+
+        public static bool enableRealTimeIndicators;
+
 
         public static void BuildHUD()
         {
@@ -86,18 +90,25 @@ namespace acidphantasm_accessibilityindicators.IndicatorUI
 
             //Plugin.LogSource.LogInfo($"PlayerLookDir: {playerAngle} | StepAngle: {realStepAngle} | Distance: {distance}m | MovementState: {movementState}");
         }
-        private static void DrawShotIndicator(float shotAngle, float shotDistance, string id)
+        private static void DrawShotIndicator(float shotAngle, float shotDistance, string accountID)
         {
-            GameObject pivotIndicator = ObjectPool.GetPooledShotObject(id);
+            GameObject pivotIndicator = ObjectPool.GetPooledShotObject(accountID);
             GameObject indicator = pivotIndicator.transform.GetChild(0).gameObject;
             Image image = indicator.GetComponent<Image>();
 
             float size = CustomInverseLerp(1, maxDistanceShots, 3.5f, 1f, shotDistance);
             float alpha = CustomInverseLerp(1, maxDistanceShots, 1f, 0f, shotDistance);
-
             indicator.transform.localScale = new Vector3(size, size, 0);
             image.color = new Color(image.color.r, image.color.g, image.color.b, alpha);
 
+            if (pivotIndicator.activeInHierarchy && enableRealTimeIndicators)
+            {
+                ObjectIDInfo objectInfo = pivotIndicator.GetComponent<ObjectIDInfo>();
+                TempCoroutineRunner runner = pivotIndicator.GetComponent<TempCoroutineRunner>();
+                runner.StopCoroutine(objectInfo._Coroutine);
+                TempCoroutine.DisableAfterRefade(pivotIndicator, image, runner, shotAngle, fadeTimeShots);
+                return;
+            }
 
             pivotIndicator.transform.Rotate(0, 0, shotAngle);
             pivotIndicator.SetActive(true);
@@ -105,7 +116,7 @@ namespace acidphantasm_accessibilityindicators.IndicatorUI
 
             TempCoroutine.DisableAfterFade(pivotIndicator, image, fadeTimeShots);
         }
-        private static void DrawStepIndicator(float stepAngle, float stepDistance, EAudioMovementState movementState, string id)
+        private static void DrawStepIndicator(float stepAngle, float stepDistance, EAudioMovementState movementState, string accountID)
         {
             if (IndicatorHUD == null)
             {
@@ -113,38 +124,55 @@ namespace acidphantasm_accessibilityindicators.IndicatorUI
                 GameObject centerPoint = IndicatorHUD.transform.GetChild(0).gameObject;
                 ObjectPool.PoolShotIndicators(ShotPivotPrefab, centerPoint, poolObjectsShots);
                 ObjectPool.PoolRunIndicators(RunPivotPrefab, centerPoint, poolObjectsSteps);
-                ObjectPool.PoolSprintIndicators(SprintPivotPrefab, centerPoint, poolObjectsSteps);
             }
 
-            GameObject pivotIndicator;
-            GameObject indicator;
+            GameObject pivotIndicator = ObjectPool.GetPooledRunObject(accountID);
+            GameObject runIndicator = pivotIndicator.transform.GetChild(0).gameObject;
+            GameObject sprintIndicator = pivotIndicator.transform.GetChild(1).gameObject;
+            GameObject selectedIndicator;
+            bool isSprinting;
             Image image;
 
             switch (movementState)
             {
                 case EAudioMovementState.Sprint:
                     if (!enableSprintSteps) return;
-                    pivotIndicator = ObjectPool.GetPooledSprintObject(id);
+                    selectedIndicator = sprintIndicator;
+                    runIndicator.SetActive(false);
+                    isSprinting = true;
                     break;
                 case EAudioMovementState.Run:
                     if (!enableRunSteps) return;
-                    pivotIndicator = ObjectPool.GetPooledRunObject(id);
+                    selectedIndicator = runIndicator;
+                    sprintIndicator.SetActive(false);
+                    isSprinting = false;
                     break;
                 default:
                     return;
             }
 
-            indicator = pivotIndicator.transform.GetChild(0).gameObject;
-            image = indicator.GetComponent<Image>();
+            image = selectedIndicator.GetComponent<Image>();
 
             float size = CustomInverseLerp(1, maxDistanceSteps, 3.5f, 1f, stepDistance);
             float alpha = CustomInverseLerp(1, maxDistanceSteps, 1f, 0f, stepDistance);
-            indicator.transform.localScale = new Vector3(size, size, 0);
+            selectedIndicator.transform.localScale = new Vector3(size, size, 0);
             image.color = new Color(image.color.r, image.color.g, image.color.b, alpha);
+
+            if (pivotIndicator.activeInHierarchy && enableRealTimeIndicators)
+            {
+                if (isSprinting) sprintIndicator.SetActive(true);
+                else runIndicator.SetActive(true);
+
+                ObjectIDInfo objectInfo = pivotIndicator.GetComponent<ObjectIDInfo>();
+                TempCoroutineRunner runner = pivotIndicator.GetComponent<TempCoroutineRunner>();
+                runner.StopCoroutine(objectInfo._Coroutine);
+                TempCoroutine.DisableAfterRefade(pivotIndicator, image, runner, stepAngle, fadeTimeSteps);
+                return;
+            }
 
             pivotIndicator.transform.Rotate(0, 0, stepAngle);
             pivotIndicator.SetActive(true);
-            indicator.SetActive(true);
+            selectedIndicator.SetActive(true);
 
             TempCoroutine.DisableAfterFade(pivotIndicator, image, fadeTimeSteps);
         }

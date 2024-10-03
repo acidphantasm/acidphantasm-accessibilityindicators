@@ -53,13 +53,19 @@ namespace acidphantasm_accessibilityindicators.Helpers
             }
         }
 
-        public static GameObject GetPooledRunObject(string id = "none")
+        public static GameObject GetPooledRunObject(string ownerID = "none")
         {
             var amountToPool = Indicators.poolObjectsSteps;
             for (int i = 0; i < amountToPool; i++)
             {
+                ObjectIDInfo info = runIndicators[i].GetComponent<ObjectIDInfo>();
+                if (info._OwnerID == ownerID && Indicators.enableRealTimeIndicators)
+                {
+                    return runIndicators[i];
+                }
                 if (!runIndicators[i].activeInHierarchy)
                 {
+                    info._OwnerID = ownerID;
                     return runIndicators[i];
                 }
                 /*
@@ -78,13 +84,19 @@ namespace acidphantasm_accessibilityindicators.Helpers
             return null;
         }
 
-        public static GameObject GetPooledSprintObject(string id = "none")
+        public static GameObject GetPooledSprintObject(string ownerID = "none")
         {
             var amountToPool = Indicators.poolObjectsSteps;
             for (int i = 0; i < amountToPool; i++)
             {
+                ObjectIDInfo info = sprintIndicators[i].GetComponent<ObjectIDInfo>();
+                if (info._OwnerID == ownerID && Indicators.enableRealTimeIndicators)
+                {
+                    return sprintIndicators[i];
+                }
                 if (!sprintIndicators[i].activeInHierarchy)
                 {
+                    info._OwnerID = ownerID;
                     return sprintIndicators[i];
                 }
                 /*
@@ -103,13 +115,19 @@ namespace acidphantasm_accessibilityindicators.Helpers
             return null;
         }
 
-        public static GameObject GetPooledShotObject(string id = "none")
+        public static GameObject GetPooledShotObject(string ownerID = "none")
         {
             var amountToPool = Indicators.poolObjectsShots;
             for (int i = 0; i < amountToPool; i++)
             {
+                ObjectIDInfo info = shotIndicators[i].GetComponent<ObjectIDInfo>();
+                if (info._OwnerID == ownerID && Indicators.enableRealTimeIndicators)
+                {
+                    return shotIndicators[i];
+                }
                 if (!shotIndicators[i].activeInHierarchy)
                 {
+                    info._OwnerID = ownerID;
                     return shotIndicators[i];
                 }
                 /*

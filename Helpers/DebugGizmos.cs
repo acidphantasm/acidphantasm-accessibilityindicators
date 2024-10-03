@@ -18,16 +18,15 @@ namespace acidphantasm_accessibilityindicators.Helpers
                 if (obj != null)
                 {
                     var runner = obj.AddComponent<TempCoroutineRunner>();
-                    runner.StartCoroutine(RunFade(obj, img, delay));
+                    obj.GetComponent<ObjectIDInfo>()._Coroutine = runner.StartCoroutine(RunFade(obj, img, delay));
                 }
                 return null;
             }
-            public static Coroutine DisableAfterRefade(GameObject obj, Image img, Quaternion endValue, float delay)
+            public static Coroutine DisableAfterRefade(GameObject obj, Image img, TempCoroutineRunner runner, float endValue, float delay)
             {
                 if (obj != null)
                 {
-                    var runner = obj.AddComponent<TempCoroutineRunner>();
-                    runner.StartCoroutine(RotateAndFadeAgain(obj, img, endValue, delay));
+                    obj.GetComponent<ObjectIDInfo>()._Coroutine = runner.StartCoroutine(RotateAndFadeAgain(obj, img, endValue, delay));
                 }
                 return null;
             }
@@ -36,11 +35,10 @@ namespace acidphantasm_accessibilityindicators.Helpers
             {
                 if (obj != null)
                 {
-                    var objCoroutineHolder = obj.GetComponent<ObjectIDInfo>().coroutineActive = true;
                     var elapsedTime = 0.0f;
                     Color currentColor = img.color;
 
-                    while ((elapsedTime < fadeTime) && objCoroutineHolder)
+                    while (elapsedTime < fadeTime)
                     {
                         yield return fadeInstruction;
                         elapsedTime += Time.deltaTime;
@@ -49,7 +47,6 @@ namespace acidphantasm_accessibilityindicators.Helpers
                     }
 
                     obj.transform.rotation = Quaternion.identity;
-                    objCoroutineHolder = false;
                     obj.SetActive(false);
 
                     TempCoroutineRunner runner = obj?.GetComponent<TempCoroutineRunner>();
@@ -59,26 +56,24 @@ namespace acidphantasm_accessibilityindicators.Helpers
                     }
                 }
             }
-            public static IEnumerator RotateAndFadeAgain(GameObject obj, Image img, Quaternion endValue, float fadeTime)
+            public static IEnumerator RotateAndFadeAgain(GameObject obj, Image img, float newZ, float fadeTime)
             {
                 if (obj != null)
                 {
-                    var objCoroutineHolder = obj.GetComponent<ObjectIDInfo>().coroutineActive = true;
                     var elapsedTime = 0.0f;
                     Color currentColor = img.color;
-                    Quaternion startValue = obj.transform.rotation;
+                    Quaternion currentRotation = obj.transform.rotation;
 
-                    while ((elapsedTime < fadeTime) && objCoroutineHolder)
+                    while (elapsedTime < fadeTime)
                     {
                         yield return fadeInstruction;
                         currentColor.a = 1.0f - Mathf.Clamp01(elapsedTime / fadeTime);
-                        obj.transform.rotation = Quaternion.Lerp(startValue, endValue, elapsedTime / fadeTime);
                         elapsedTime += Time.deltaTime;
+                        obj.transform.rotation = Quaternion.Lerp(currentRotation, Quaternion.Euler(currentRotation.x, currentRotation.y, newZ), elapsedTime / fadeTime);
                         img.color = currentColor;
                     }
 
                     obj.transform.rotation = Quaternion.identity;
-                    objCoroutineHolder = false;
                     obj.SetActive(false);
 
                     TempCoroutineRunner runner = obj?.GetComponent<TempCoroutineRunner>();
