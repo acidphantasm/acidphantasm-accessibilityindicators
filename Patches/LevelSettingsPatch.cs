@@ -1,43 +1,30 @@
-﻿using EFT;
+﻿using acidphantasm_accessibilityindicators.IndicatorUI;
+using EFT;
 using HarmonyLib;
 using SPT.Reflection.Patching;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
-using UnityEngine;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace acidphantasm_accessibilityindicators.Patches
 {
-    internal class LevelSettingsNorthVectorPatch : ModulePatch
+    internal class LevelSettingsPatch : ModulePatch
     {
-        public static Vector3 northVector;
-
         protected override MethodBase GetTargetMethod()
         {
-            return AccessTools.PropertyGetter(typeof(LevelSettings), nameof(LevelSettings.NorthVector));
+            return AccessTools.Method(typeof(LevelSettings), nameof(LevelSettings.Awake));
         }
 
         [PatchPostfix]
-        public static void PatchPostfix(LevelSettings __instance, Vector3 __result)
+        public static void PatchPostfix(LevelSettings __instance)
         {
             if (__instance == null) return;
-            Plugin.LogSource.LogInfo(__result);
-            northVector = __result;
-        }
-    }
-    internal class LevelSettingsNorthDirectionPatch : ModulePatch
-    {
-        public static float northDirection;
 
-        protected override MethodBase GetTargetMethod()
-        {
-            return AccessTools.PropertyGetter(typeof(LevelSettings), nameof(LevelSettings.NorthDirection));
-        }
-
-        [PatchPostfix]
-        public static void PatchPostfix(LevelSettings __instance, float __result)
-        {
-            if (__instance == null) return;
-            Plugin.LogSource.LogInfo(__result);
-            northDirection = __result;
+            Panel.northVector = __instance.NorthVector;
+            Panel.northDirection = __instance.NorthDirection;
         }
     }
 }

@@ -11,7 +11,6 @@ namespace acidphantasm_accessibilityindicators
         private const string TogglesTitle = "Mod Toggles";
         public static ConfigEntry<bool> enable;
         public static ConfigEntry<bool> showTeammates;
-        public static ConfigEntry<bool> enableRealTimeIndicators;
 
         private const string ConfigShotsTitle = "Shots Configuration";
         public static ConfigEntry<bool> enableShots;
@@ -31,11 +30,9 @@ namespace acidphantasm_accessibilityindicators
             // Toggles
             enable = config.Bind(TogglesTitle, "Enable Mod", true, new ConfigDescription("Enable or disable this mod.", null, new ConfigurationManagerAttributes { Order = loadOrder-- }));
             showTeammates = config.Bind(TogglesTitle, "Show Teammates", false, new ConfigDescription("If you enjoy Swedish Coffee, this toggle is for you. Toggle showing indicators for teammates.", null, new ConfigurationManagerAttributes { Order = loadOrder-- }));
-            enableRealTimeIndicators = config.Bind(TogglesTitle, "Test Indicators", false, new ConfigDescription("Ties the indicators to specific bot instances, updates indicator location on next sound.", null, new ConfigurationManagerAttributes { Order = loadOrder-- }));
 
             Indicators.enable = enable.Value;
             Indicators.showTeammates = showTeammates.Value;
-            Indicators.enableRealTimeIndicators = enableRealTimeIndicators.Value;
 
 
             // Shots
@@ -47,7 +44,7 @@ namespace acidphantasm_accessibilityindicators
             Indicators.enableShots = enableShots.Value;
             Indicators.maxDistanceShots = maxDistanceShots.Value;
             Indicators.fadeTimeShots = fadeTimeShots.Value;
-            Indicators.poolObjectsShots = poolObjectsShots.Value;
+            Panel.poolObjectsShots = poolObjectsShots.Value;
 
 
             // Steps
@@ -61,13 +58,12 @@ namespace acidphantasm_accessibilityindicators
             Indicators.enableSprintSteps = enableSprintSteps.Value;
             Indicators.maxDistanceSteps = maxDistanceSteps.Value;
             Indicators.fadeTimeSteps = fadeTimeSteps.Value;
-            Indicators.poolObjectsSteps = poolObjectsSteps.Value;
+            Panel.poolObjectsSteps = poolObjectsSteps.Value;
 
 
             // Triggers
             enable.SettingChanged += Accessibility_SettingChanged;
             showTeammates.SettingChanged += Accessibility_SettingChanged;
-            enableRealTimeIndicators.SettingChanged += Accessibility_SettingChanged;
 
             enableShots.SettingChanged += Accessibility_SettingChanged;
             maxDistanceShots.SettingChanged += Accessibility_SettingChanged;
@@ -86,18 +82,17 @@ namespace acidphantasm_accessibilityindicators
         {
             Indicators.enable = enable.Value;
             Indicators.showTeammates = showTeammates.Value;
-            Indicators.enableRealTimeIndicators = enableRealTimeIndicators.Value;
 
             Indicators.enableShots = enableShots.Value;
             Indicators.maxDistanceShots = maxDistanceShots.Value;
             Indicators.fadeTimeShots = fadeTimeShots.Value;
-            Indicators.poolObjectsShots = poolObjectsShots.Value;
+            Panel.poolObjectsShots = poolObjectsShots.Value;
 
             Indicators.enableRunSteps = enableRunSteps.Value;
             Indicators.enableSprintSteps = enableSprintSteps.Value;
             Indicators.maxDistanceSteps = maxDistanceSteps.Value;
             Indicators.fadeTimeSteps = fadeTimeSteps.Value;
-            Indicators.poolObjectsSteps = poolObjectsSteps.Value;
+            Panel.poolObjectsSteps = poolObjectsSteps.Value;
         }
     }
 }

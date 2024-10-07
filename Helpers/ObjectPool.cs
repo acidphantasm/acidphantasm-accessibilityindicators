@@ -55,11 +55,11 @@ namespace acidphantasm_accessibilityindicators.Helpers
 
         public static GameObject GetPooledRunObject(string ownerID = "none")
         {
-            var amountToPool = Indicators.poolObjectsSteps;
+            var amountToPool = Panel.poolObjectsSteps;
             for (int i = 0; i < amountToPool; i++)
             {
                 ObjectIDInfo info = runIndicators[i].GetComponent<ObjectIDInfo>();
-                if (info._OwnerID == ownerID && Indicators.enableRealTimeIndicators)
+                if (info._OwnerID == ownerID)
                 {
                     return runIndicators[i];
                 }
@@ -86,11 +86,11 @@ namespace acidphantasm_accessibilityindicators.Helpers
 
         public static GameObject GetPooledSprintObject(string ownerID = "none")
         {
-            var amountToPool = Indicators.poolObjectsSteps;
+            var amountToPool = Panel.poolObjectsSteps;
             for (int i = 0; i < amountToPool; i++)
             {
                 ObjectIDInfo info = sprintIndicators[i].GetComponent<ObjectIDInfo>();
-                if (info._OwnerID == ownerID && Indicators.enableRealTimeIndicators)
+                if (info._OwnerID == ownerID)
                 {
                     return sprintIndicators[i];
                 }
@@ -117,11 +117,11 @@ namespace acidphantasm_accessibilityindicators.Helpers
 
         public static GameObject GetPooledShotObject(string ownerID = "none")
         {
-            var amountToPool = Indicators.poolObjectsShots;
+            var amountToPool = Panel.poolObjectsShots;
             for (int i = 0; i < amountToPool; i++)
             {
                 ObjectIDInfo info = shotIndicators[i].GetComponent<ObjectIDInfo>();
-                if (info._OwnerID == ownerID && Indicators.enableRealTimeIndicators)
+                if (info._OwnerID == ownerID)
                 {
                     return shotIndicators[i];
                 }

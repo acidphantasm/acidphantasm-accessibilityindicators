@@ -115,9 +115,11 @@
     <Compile Include="Helpers\Utils.cs" />
     <Compile Include="IndicatorUI\Indicators.cs" />
     <Compile Include="AccessibilityIndicatorsConfig.cs" />
+    <Compile Include="IndicatorUI\Panel.cs" />
+    <Compile Include="Patches\GameWorldPatch.cs" />
     <Compile Include="Patches\FirearmControllerPatch.cs" />
     <Compile Include="Patches\LevelSettingsPatch.cs" />
-    <Compile Include="Patches\PlayerPatch.cs" />
+    <Compile Include="Patches\PlayerPatches.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -27,9 +27,11 @@ namespace acidphantasm_accessibilityindicators
 
             AccessibilityIndicatorsConfig.InitAAConfig(Config);
 
-            //new LevelSettingsNorthVectorPatch().Enable();
-            //new LevelSettingsNorthDirectionPatch().Enable();
+            new GameWorldOnGameStartedPatch().Enable();
+            new LevelSettingsPatch().Enable();
+
             new FirearmControllerPatch().Enable();
+
             new PlayerDefaultPlayPatch().Enable();
             new PlayerPlayStepSoundPatch().Enable();
             new PlayerMethod50Patch().Enable();
@@ -51,10 +53,10 @@ namespace acidphantasm_accessibilityindicators
             {
                 throw new Exception($"Error loading bundles");
             }
-            Indicators.IndicatorHUDPrefab = LoadAsset<GameObject>(bundle, "Canvas.prefab");
-            Indicators.ShotPivotPrefab = LoadAsset<GameObject>(bundle, "shotPivot.prefab");
-            Indicators.RunPivotPrefab = LoadAsset<GameObject>(bundle, "runPivot.prefab");
-            Indicators.SprintPivotPrefab = LoadAsset<GameObject>(bundle, "sprintPivot.prefab");
+            Panel.IndicatorHUDPrefab = LoadAsset<GameObject>(bundle, "Canvas.prefab");
+            Panel.ShotPivotPrefab = LoadAsset<GameObject>(bundle, "shotPivot.prefab");
+            Panel.RunPivotPrefab = LoadAsset<GameObject>(bundle, "runPivot.prefab");
+            Panel.SprintPivotPrefab = LoadAsset<GameObject>(bundle, "sprintPivot.prefab");
         }
         private static T LoadAsset<T>(AssetBundle bundle, string assetPath) where T : UnityEngine.Object
         {

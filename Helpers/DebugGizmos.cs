@@ -22,11 +22,11 @@ namespace acidphantasm_accessibilityindicators.Helpers
                 }
                 return null;
             }
-            public static Coroutine DisableAfterRefade(GameObject obj, Image img, TempCoroutineRunner runner, float endValue, float delay)
+            public static Coroutine DisableAfterRefade(GameObject obj, Image img, TempCoroutineRunner runner, float delay)
             {
                 if (obj != null)
                 {
-                    obj.GetComponent<ObjectIDInfo>()._Coroutine = runner.StartCoroutine(RotateAndFadeAgain(obj, img, endValue, delay));
+                    obj.GetComponent<ObjectIDInfo>()._Coroutine = runner.StartCoroutine(RunFade(obj, img, delay));
                 }
                 return null;
             }
@@ -56,20 +56,18 @@ namespace acidphantasm_accessibilityindicators.Helpers
                     }
                 }
             }
-            public static IEnumerator RotateAndFadeAgain(GameObject obj, Image img, float newZ, float fadeTime)
+            public static IEnumerator RotateAndFadeAgain(GameObject obj, Image img, float fadeTime)
             {
                 if (obj != null)
                 {
                     var elapsedTime = 0.0f;
                     Color currentColor = img.color;
-                    Quaternion currentRotation = obj.transform.rotation;
 
                     while (elapsedTime < fadeTime)
                     {
                         yield return fadeInstruction;
                         currentColor.a = 1.0f - Mathf.Clamp01(elapsedTime / fadeTime);
                         elapsedTime += Time.deltaTime;
-                        obj.transform.rotation = Quaternion.Lerp(currentRotation, Quaternion.Euler(currentRotation.x, currentRotation.y, newZ), elapsedTime / fadeTime);
                         img.color = currentColor;
                     }
 
