@@ -39,7 +39,7 @@ namespace acidphantasm_accessibilityindicators
             enableShots = config.Bind(ConfigShotsTitle, "Enable Shots", true, new ConfigDescription("Enable or disable shot indicators.", null, new ConfigurationManagerAttributes { Order = loadOrder-- }));
             maxDistanceShots = config.Bind(ConfigShotsTitle, "Max Distance", 150f, new ConfigDescription("Max distance from sound to show indicator.", new AcceptableValueRange<float>(1f, 300f), new ConfigurationManagerAttributes { Order = loadOrder-- }));
             fadeTimeShots = config.Bind(ConfigShotsTitle, "Fade Time", 1f, new ConfigDescription("Amount of time in seconds for indicator to fade.", new AcceptableValueRange<float>(0.25f, 2f), new ConfigurationManagerAttributes { Order = loadOrder-- }));
-            poolObjectsShots = config.Bind(ConfigShotsTitle, "Pool Objects", 50, new ConfigDescription("Number of indicator clones to make. Increase this if indicators are not showing when they should.", new AcceptableValueRange<int>(25, 100), new ConfigurationManagerAttributes { Order = loadOrder-- }));
+            poolObjectsShots = config.Bind(ConfigShotsTitle, "Pool Objects", 75, new ConfigDescription("Number of indicator clones to make. Increase this if indicators are not showing when they should.", new AcceptableValueRange<int>(50, 150), new ConfigurationManagerAttributes { Order = loadOrder-- }));
 
             Indicators.enableShots = enableShots.Value;
             Indicators.maxDistanceShots = maxDistanceShots.Value;
@@ -52,7 +52,7 @@ namespace acidphantasm_accessibilityindicators
             enableSprintSteps = config.Bind(ConfigStepsTitle, "Enable Sprint Steps", true, new ConfigDescription("Enable or disable sprint step indicators.", null, new ConfigurationManagerAttributes { Order = loadOrder-- }));
             maxDistanceSteps = config.Bind(ConfigStepsTitle, "Max Distance", 50f, new ConfigDescription("Max distance from sound to show indicator.", new AcceptableValueRange<float>(1f, 75f), new ConfigurationManagerAttributes { Order = loadOrder-- }));
             fadeTimeSteps = config.Bind(ConfigStepsTitle, "Fade Time", 0.75f, new ConfigDescription("Amount of time in seconds for indicator to fade.", new AcceptableValueRange<float>(0.25f, 2f), new ConfigurationManagerAttributes { Order = loadOrder-- }));
-            poolObjectsSteps = config.Bind(ConfigStepsTitle, "Pool Objects", 100, new ConfigDescription("Number of indicator clones to make. Increase this if indicators are not showing when they should.", new AcceptableValueRange<int>(50, 150), new ConfigurationManagerAttributes { Order = loadOrder-- }));
+            poolObjectsSteps = config.Bind(ConfigStepsTitle, "Pool Objects", 75, new ConfigDescription("Number of indicator clones to make. Increase this if indicators are not showing when they should.", new AcceptableValueRange<int>(50, 150), new ConfigurationManagerAttributes { Order = loadOrder-- }));
 
             Indicators.enableRunSteps = enableRunSteps.Value;
             Indicators.enableSprintSteps = enableSprintSteps.Value;

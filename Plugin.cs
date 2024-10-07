@@ -56,7 +56,6 @@ namespace acidphantasm_accessibilityindicators
             Panel.IndicatorHUDPrefab = LoadAsset<GameObject>(bundle, "Canvas.prefab");
             Panel.ShotPivotPrefab = LoadAsset<GameObject>(bundle, "shotPivot.prefab");
             Panel.RunPivotPrefab = LoadAsset<GameObject>(bundle, "runPivot.prefab");
-            Panel.SprintPivotPrefab = LoadAsset<GameObject>(bundle, "sprintPivot.prefab");
         }
         private static T LoadAsset<T>(AssetBundle bundle, string assetPath) where T : UnityEngine.Object
         {

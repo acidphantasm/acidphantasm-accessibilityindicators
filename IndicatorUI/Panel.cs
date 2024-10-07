@@ -16,7 +16,6 @@ namespace acidphantasm_accessibilityindicators.IndicatorUI
         public static GameObject HUDCenterPoint;
         public static GameObject ShotPivotPrefab;
         public static GameObject RunPivotPrefab;
-        public static GameObject SprintPivotPrefab;
         public static GameObject IndicatorHUD;
 
         public static Vector3 northVector;
