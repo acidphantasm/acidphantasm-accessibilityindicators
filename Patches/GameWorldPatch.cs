@@ -20,7 +20,7 @@ namespace acidphantasm_accessibilityindicators.Patches
         }
 
         [PatchPostfix]
-        public static void PatchPostfix(GameWorld __instance)
+        public static void PatchPostfix()
         {
             if (Panel.IndicatorHUD == null) Panel.CreateHUD();
         }

@@ -30,7 +30,9 @@ namespace acidphantasm_accessibilityindicators.Patches
                 || !Indicators.enableShots
                 || (!player.IsAI && Utils.IsGroupedWithMainPlayer(player) && !Indicators.showTeammates)) return;
 
-            Indicators.PrepareShot(shotPosition, player.AccountId);
+            bool isTeammate = Utils.IsGroupedWithMainPlayer(player);
+
+            Indicators.PrepareShot(shotPosition, player.AccountId, isTeammate);
         }
     }
 }
