@@ -1,11 +1,5 @@
 ﻿using acidphantasm_accessibilityindicators.Helpers;
 using acidphantasm_accessibilityindicators.Scripts;
-using EFT.UI;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace acidphantasm_accessibilityindicators.IndicatorUI

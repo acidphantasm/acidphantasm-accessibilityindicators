@@ -1,7 +1,4 @@
-﻿using Comfort.Common;
-using EFT;
-using UnityEngine;
-using acidphantasm_accessibilityindicators.Patches;
+﻿using UnityEngine;
 using acidphantasm_accessibilityindicators.Helpers;
 using static acidphantasm_accessibilityindicators.Helpers.DebugGizmos;
 using Audio.Data;
@@ -194,7 +191,7 @@ namespace acidphantasm_accessibilityindicators.IndicatorUI
             float newMinDistance = normalizeDistance ? minNormalizedDistance : 1f;
             float newMaxDistance = normalizeDistance ? maxNormalizedDistance : maxShotDistance;
 
-            float size = Utils.CustomInverseLerp(newMinDistance, newMaxDistance, 4f, 1f, shotDistance);
+            float size = Utils.CustomInverseLerp(newMinDistance, newMaxDistance, 4f, 0.5f, shotDistance);
             float alpha = Utils.CustomInverseLerp(newMinDistance, newMaxDistance, 0.75f, 0.1f, shotDistance);
             selectedShotIndicator.transform.localScale = new Vector3(size, size, 0);
             image.color = new Color(image.color.r, image.color.g, image.color.b, alpha);
@@ -326,7 +323,7 @@ namespace acidphantasm_accessibilityindicators.IndicatorUI
 
             image = selectedStepIndicator.GetComponent<Image>();
 
-            float size = Utils.CustomInverseLerp(newMinDistance, newMaxDistance, 4f, 1f, stepDistance);
+            float size = Utils.CustomInverseLerp(newMinDistance, newMaxDistance, 4f, 0.5f, stepDistance);
             float alpha = Utils.CustomInverseLerp(newMinDistance, newMaxDistance, 0.75f, 0.1f, stepDistance);
             selectedStepIndicator.transform.localScale = new Vector3(size, size, 0);
             image.color = new Color(image.color.r, image.color.g, image.color.b, alpha);

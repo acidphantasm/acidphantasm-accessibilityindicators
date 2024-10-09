@@ -2,7 +2,6 @@
 using Comfort.Common;
 using acidphantasm_accessibilityindicators.IndicatorUI;
 using UnityEngine;
-using UnityEngine.Profiling;
 
 namespace acidphantasm_accessibilityindicators.Helpers
 {
@@ -70,6 +69,7 @@ namespace acidphantasm_accessibilityindicators.Helpers
         public static float CustomInverseLerp(float OldMin, float OldMax, float NewMin, float NewMax, float OldValue)
         {
             if (OldValue > OldMax) OldValue = OldMax;
+            if (OldValue < OldMin) OldValue = OldMin;
 
             float OldRange = (OldMax - OldMin);
             float NewRange = (NewMax - NewMin);

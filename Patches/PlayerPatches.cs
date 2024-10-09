@@ -1,7 +1,6 @@
 ﻿using acidphantasm_accessibilityindicators.Helpers;
 using acidphantasm_accessibilityindicators.IndicatorUI;
 using Audio.Data;
-using Comfort.Common;
 using EFT;
 using HarmonyLib;
 using SPT.Reflection.Patching;

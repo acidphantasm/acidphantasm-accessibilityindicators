@@ -1,7 +1,6 @@
 ﻿using acidphantasm_accessibilityindicators.IndicatorUI;
 using BepInEx.Configuration;
 using System;
-using UnityEngine;
 
 namespace acidphantasm_accessibilityindicators
 {
@@ -92,17 +91,17 @@ namespace acidphantasm_accessibilityindicators
 
             // Voice
             enableVoicelines = config.Bind(ConfigVoiceTitle, "Enable Voicelines", true, new ConfigDescription("Enable or disable voice indicators.", null, new ConfigurationManagerAttributes { Order = loadOrder-- }));
-            maxVoiceDistance = config.Bind(ConfigVoiceTitle, "Max Voice Distance", 30f, new ConfigDescription("Max distance from sound to show indicator.", new AcceptableValueRange<float>(1f, 75f), new ConfigurationManagerAttributes { Order = loadOrder-- }));
+            maxVoiceDistance = config.Bind(ConfigVoiceTitle, "Max Voice Distance", 50f, new ConfigDescription("Max distance from sound to show indicator.", new AcceptableValueRange<float>(1f, 75f), new ConfigurationManagerAttributes { Order = loadOrder-- }));
             fadeTimeVoice = config.Bind(ConfigVoiceTitle, "Voice Fade Time", 1f, new ConfigDescription("Amount of time in seconds for indicator to fade.", new AcceptableValueRange<float>(0.25f, 2f), new ConfigurationManagerAttributes { Order = loadOrder-- }));
             Indicators.enableVoicelines = enableVoicelines.Value;
             Indicators.maxVoiceDistance = maxVoiceDistance.Value;
             Indicators.fadeTimeVoice = fadeTimeVoice.Value;
 
             // Advanced
-            poolObjectsSteps = config.Bind(ConfigAdvancedTitle, "Shots Pool Objects", 25, new ConfigDescription("Number of indicator clones to make. Increase this if indicators are not showing when they should.", new AcceptableValueRange<int>(25, 100), new ConfigurationManagerAttributes { IsAdvanced = true, Order = loadOrder-- }));
-            poolObjectsShots = config.Bind(ConfigAdvancedTitle, "Footstep Pool Objects", 25, new ConfigDescription("Number of indicator clones to make. Increase this if indicators are not showing when they should.", new AcceptableValueRange<int>(25, 100), new ConfigurationManagerAttributes { IsAdvanced = true, Order = loadOrder-- }));
-            poolObjectsVoice = config.Bind(ConfigAdvancedTitle, "Voice Pool Objects", 25, new ConfigDescription("Number of indicator clones to make. Increase this if indicators are not showing when they should.", new AcceptableValueRange<int>(25, 100), new ConfigurationManagerAttributes { IsAdvanced = true, Order = loadOrder-- }));
-            poolObjectsVerticality = config.Bind(ConfigAdvancedTitle, "Verticality Pool Objects", 25, new ConfigDescription("Number of indicator clones to make. Increase this if indicators are not showing when they should.", new AcceptableValueRange<int>(25, 100), new ConfigurationManagerAttributes { IsAdvanced = true, Order = loadOrder-- }));
+            poolObjectsSteps = config.Bind(ConfigAdvancedTitle, "Shots Pool Objects", 35, new ConfigDescription("Number of indicator clones to make. Increase this if indicators are not showing when they should.", new AcceptableValueRange<int>(25, 100), new ConfigurationManagerAttributes { IsAdvanced = true, Order = loadOrder-- }));
+            poolObjectsShots = config.Bind(ConfigAdvancedTitle, "Footstep Pool Objects", 35, new ConfigDescription("Number of indicator clones to make. Increase this if indicators are not showing when they should.", new AcceptableValueRange<int>(25, 100), new ConfigurationManagerAttributes { IsAdvanced = true, Order = loadOrder-- }));
+            poolObjectsVoice = config.Bind(ConfigAdvancedTitle, "Voice Pool Objects", 35, new ConfigDescription("Number of indicator clones to make. Increase this if indicators are not showing when they should.", new AcceptableValueRange<int>(25, 100), new ConfigurationManagerAttributes { IsAdvanced = true, Order = loadOrder-- }));
+            poolObjectsVerticality = config.Bind(ConfigAdvancedTitle, "Verticality Pool Objects", 35, new ConfigDescription("Number of indicator clones to make. Increase this if indicators are not showing when they should.", new AcceptableValueRange<int>(25, 100), new ConfigurationManagerAttributes { IsAdvanced = true, Order = loadOrder-- }));
             Panel.poolObjectsSteps = poolObjectsSteps.Value;
             Panel.poolObjectsShots = poolObjectsShots.Value;
             Panel.poolObjectsVoice = poolObjectsVoice.Value;
