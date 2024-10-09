@@ -9,7 +9,7 @@ using System.Reflection;
 
 namespace acidphantasm_accessibilityindicators
 {
-    [BepInPlugin("phantasm.acid.accessibilityindicators", "acidphantasm-AccessibilityIndicators", "1.0.0")]
+    [BepInPlugin("phantasm.acid.accessibilityindicators", "acidphantasm-AccessibilityIndicators", "1.1.0")]
     [BepInDependency("com.SPT.core", "3.9.0")]
     public class Plugin : BaseUnityPlugin
     {
@@ -36,6 +36,8 @@ namespace acidphantasm_accessibilityindicators
             new PlayerPlayStepSoundPatch().Enable();
             new PlayerMethod50Patch().Enable();
 
+            new PhraseSpeakerClassPatch().Enable();
+
             LogSource.LogInfo("[AccessibilityIndicators] loaded!");
         }
 
@@ -56,6 +58,8 @@ namespace acidphantasm_accessibilityindicators
             Panel.IndicatorHUDPrefab = LoadAsset<GameObject>(bundle, "Canvas.prefab");
             Panel.ShotPivotPrefab = LoadAsset<GameObject>(bundle, "shotPivot.prefab");
             Panel.RunPivotPrefab = LoadAsset<GameObject>(bundle, "runPivot.prefab");
+            Panel.VoicePivotPrefab = LoadAsset<GameObject>(bundle, "voicePivot.prefab");
+            Panel.VerticalityPivotPrefab = LoadAsset<GameObject>(bundle, "verticalityPivot.prefab");
         }
         private static T LoadAsset<T>(AssetBundle bundle, string assetPath) where T : UnityEngine.Object
         {

@@ -28,8 +28,9 @@ namespace acidphantasm_accessibilityindicators.Patches
 
             Vector3 position = __instance.Position;
             float distance = (float)distanceInfo.GetValue(__instance);
+            bool isTeammate = Utils.IsGroupedWithMainPlayer(__instance);
 
-            Indicators.PrepareStep(movementState, position, distance, __instance.AccountId);
+            Indicators.PrepareStep(movementState, position, distance, __instance.AccountId, isTeammate);
         }
     }
     internal class PlayerPlayStepSoundPatch : ModulePatch
@@ -52,8 +53,9 @@ namespace acidphantasm_accessibilityindicators.Patches
             Vector3 position = __instance.Position;
             float distance = (float)distanceInfo.GetValue(__instance);
             EAudioMovementState eaudioMovementState = ((__instance.Pose == EPlayerPose.Duck) ? EAudioMovementState.Duck : EAudioMovementState.Run);
+            bool isTeammate = Utils.IsGroupedWithMainPlayer(__instance);
 
-            Indicators.PrepareStep(eaudioMovementState, position, distance, __instance.AccountId);
+            Indicators.PrepareStep(eaudioMovementState, position, distance, __instance.AccountId, isTeammate);
         }
     }
     internal class PlayerMethod50Patch : ModulePatch
@@ -78,10 +80,9 @@ namespace acidphantasm_accessibilityindicators.Patches
                 Vector3 position = __instance.Position;
                 float distance = (float)distanceInfo.GetValue(__instance);
                 var movementState = EAudioMovementState.Sprint;
-                Indicators.PrepareStep(movementState, position, distance, __instance.AccountId);
+                bool isTeammate = Utils.IsGroupedWithMainPlayer(__instance);
+                Indicators.PrepareStep(movementState, position, distance, __instance.AccountId, isTeammate);
             }
-
-            
         }
     }
 }
