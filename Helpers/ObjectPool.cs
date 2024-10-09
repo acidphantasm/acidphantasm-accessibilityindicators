@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using acidphantasm_accessibilityindicators.IndicatorUI;
+using acidphantasm_accessibilityindicators.Scripts;
 
 namespace acidphantasm_accessibilityindicators.Helpers
 {
@@ -9,8 +10,9 @@ namespace acidphantasm_accessibilityindicators.Helpers
     {
         public static ObjectPool SharedInstance;
         public static List<GameObject> runIndicators;
-        public static List<GameObject> sprintIndicators;
         public static List<GameObject> shotIndicators;
+        public static List<GameObject> voiceIndicators;
+        public static List<GameObject> verticalityIndicators;
 
         void Awake()
         {
@@ -28,16 +30,18 @@ namespace acidphantasm_accessibilityindicators.Helpers
                 runIndicators.Add(tmp);
             }
         }
-        public static void PoolSprintIndicators(GameObject objectToPool, GameObject parentObject, int amountToPool)
+        public static void PoolVoiceIndicators(GameObject objectToPool, GameObject parentObject, int amountToPool)
         {
-            sprintIndicators = new List<GameObject>();
+            voiceIndicators = new List<GameObject>();
             GameObject tmp;
             for (int i = 0; i < amountToPool; i++)
             {
                 tmp = Instantiate(objectToPool, parentObject.transform);
+                GameObject armPivot = tmp.transform.GetChild(0).gameObject;
                 tmp.AddComponent<ObjectIDInfo>();
+                armPivot.AddComponent<KeepVerticalRotation>();
                 tmp.SetActive(false);
-                sprintIndicators.Add(tmp);
+                voiceIndicators.Add(tmp);
             }
         }
         public static void PoolShotIndicators(GameObject objectToPool, GameObject parentObject, int amountToPool)
@@ -50,6 +54,22 @@ namespace acidphantasm_accessibilityindicators.Helpers
                 tmp.AddComponent<ObjectIDInfo>();
                 tmp.SetActive(false);
                 shotIndicators.Add(tmp);
+            }
+        }
+        public static void PoolVerticalityIndicators(GameObject objectToPool, GameObject parentObject, int amountToPool)
+        {
+            verticalityIndicators = new List<GameObject>();
+            GameObject tmp;
+            for (int i = 0; i < amountToPool; i++)
+            {
+                tmp = Instantiate(objectToPool, parentObject.transform);
+                GameObject belowArmPivot = tmp.transform.GetChild(0).gameObject;
+                GameObject aboveArmPivot = tmp.transform.GetChild(1).gameObject;
+                tmp.AddComponent<ObjectIDInfo>();
+                belowArmPivot.AddComponent<KeepVerticalRotation>();
+                aboveArmPivot.AddComponent<KeepVerticalRotation>();
+                tmp.SetActive(false);
+                verticalityIndicators.Add(tmp);
             }
         }
 
@@ -68,49 +88,25 @@ namespace acidphantasm_accessibilityindicators.Helpers
                     info._OwnerID = ownerID;
                     return runIndicators[i];
                 }
-                /*
-                ObjectIDInfo objectId = runIndicators[i].GetComponent<ObjectIDInfo>();
-                if (objectId.id == id)
-                {
-                    return runIndicators[i];
-                }
-                if (objectId.id == 0)
-                {
-                    objectId.id = id;
-                    return runIndicators[i];
-                }
-                */
             }
             return null;
         }
 
-        public static GameObject GetPooledSprintObject(string ownerID = "none")
+        public static GameObject GetPooledVoiceObject(string ownerID = "none")
         {
-            var amountToPool = Panel.poolObjectsSteps;
+            var amountToPool = Panel.poolObjectsVoice;
             for (int i = 0; i < amountToPool; i++)
             {
-                ObjectIDInfo info = sprintIndicators[i].GetComponent<ObjectIDInfo>();
+                ObjectIDInfo info = voiceIndicators[i].GetComponent<ObjectIDInfo>();
                 if (info._OwnerID == ownerID)
                 {
-                    return sprintIndicators[i];
+                    return voiceIndicators[i];
                 }
-                if (!sprintIndicators[i].activeInHierarchy)
+                if (!voiceIndicators[i].activeInHierarchy)
                 {
                     info._OwnerID = ownerID;
-                    return sprintIndicators[i];
+                    return voiceIndicators[i];
                 }
-                /*
-                ObjectIDInfo objectId = sprintIndicators[i].GetComponent<ObjectIDInfo>();
-                if (objectId.id == id)
-                {
-                    return sprintIndicators[i];
-                }
-                if (objectId.id == 0)
-                {
-                    objectId.id = id;
-                    return sprintIndicators[i];
-                }
-                */
             }
             return null;
         }
@@ -130,18 +126,25 @@ namespace acidphantasm_accessibilityindicators.Helpers
                     info._OwnerID = ownerID;
                     return shotIndicators[i];
                 }
-                /*
-                ObjectIDInfo objectId = shotIndicators[i].GetComponent<ObjectIDInfo>();
-                if (objectId.id == id)
+            }
+            return null;
+        }
+
+        public static GameObject GetPooledVerticalityObject(string ownerID = "none")
+        {
+            var amountToPool = Panel.poolObjectsVerticality;
+            for (int i = 0; i < amountToPool; i++)
+            {
+                ObjectIDInfo info = verticalityIndicators[i].GetComponent<ObjectIDInfo>();
+                if (info._OwnerID == ownerID)
                 {
-                    return shotIndicators[i];
+                    return verticalityIndicators[i];
                 }
-                if (objectId.id == 0)
+                if (!verticalityIndicators[i].activeInHierarchy)
                 {
-                    objectId.id = id;
-                    return shotIndicators[i];
+                    info._OwnerID = ownerID;
+                    return verticalityIndicators[i];
                 }
-                */
             }
             return null;
         }

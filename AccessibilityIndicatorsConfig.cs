@@ -33,9 +33,16 @@ namespace acidphantasm_accessibilityindicators
         public static ConfigEntry<float> maxSneakDistance;
         public static ConfigEntry<float> fadeTimeSneak;
 
-        private const string ConfigAdvancedTitle = "4. Advanced";
+        private const string ConfigVoiceTitle = "4. Voiceline Configuration";
+        public static ConfigEntry<bool> enableVoicelines;
+        public static ConfigEntry<float> maxVoiceDistance;
+        public static ConfigEntry<float> fadeTimeVoice;
+
+        private const string ConfigAdvancedTitle = "5. Advanced";
         public static ConfigEntry<int> poolObjectsShots;
         public static ConfigEntry<int> poolObjectsSteps;
+        public static ConfigEntry<int> poolObjectsVoice;
+        public static ConfigEntry<int> poolObjectsVerticality;
 
 
         public static void InitAAConfig(ConfigFile config)
@@ -83,11 +90,23 @@ namespace acidphantasm_accessibilityindicators
             Indicators.maxSneakDistance = maxSneakDistance.Value;
             Indicators.fadeTimeSneak = fadeTimeSneak.Value;
 
+            // Voice
+            enableVoicelines = config.Bind(ConfigVoiceTitle, "Enable Voicelines", true, new ConfigDescription("Enable or disable voice indicators.", null, new ConfigurationManagerAttributes { Order = loadOrder-- }));
+            maxVoiceDistance = config.Bind(ConfigVoiceTitle, "Max Voice Distance", 30f, new ConfigDescription("Max distance from sound to show indicator.", new AcceptableValueRange<float>(1f, 75f), new ConfigurationManagerAttributes { Order = loadOrder-- }));
+            fadeTimeVoice = config.Bind(ConfigVoiceTitle, "Voice Fade Time", 1f, new ConfigDescription("Amount of time in seconds for indicator to fade.", new AcceptableValueRange<float>(0.25f, 2f), new ConfigurationManagerAttributes { Order = loadOrder-- }));
+            Indicators.enableVoicelines = enableVoicelines.Value;
+            Indicators.maxVoiceDistance = maxVoiceDistance.Value;
+            Indicators.fadeTimeVoice = fadeTimeVoice.Value;
+
             // Advanced
-            poolObjectsSteps = config.Bind(ConfigAdvancedTitle, "Shots Pool Objects", 75, new ConfigDescription("Number of indicator clones to make. Increase this if indicators are not showing when they should.", new AcceptableValueRange<int>(50, 150), new ConfigurationManagerAttributes { IsAdvanced = true, Order = loadOrder-- }));
-            poolObjectsShots = config.Bind(ConfigAdvancedTitle, "Footstep Pool Objects", 75, new ConfigDescription("Number of indicator clones to make. Increase this if indicators are not showing when they should.", new AcceptableValueRange<int>(50, 150), new ConfigurationManagerAttributes { IsAdvanced = true, Order = loadOrder-- }));
+            poolObjectsSteps = config.Bind(ConfigAdvancedTitle, "Shots Pool Objects", 25, new ConfigDescription("Number of indicator clones to make. Increase this if indicators are not showing when they should.", new AcceptableValueRange<int>(25, 100), new ConfigurationManagerAttributes { IsAdvanced = true, Order = loadOrder-- }));
+            poolObjectsShots = config.Bind(ConfigAdvancedTitle, "Footstep Pool Objects", 25, new ConfigDescription("Number of indicator clones to make. Increase this if indicators are not showing when they should.", new AcceptableValueRange<int>(25, 100), new ConfigurationManagerAttributes { IsAdvanced = true, Order = loadOrder-- }));
+            poolObjectsVoice = config.Bind(ConfigAdvancedTitle, "Voice Pool Objects", 25, new ConfigDescription("Number of indicator clones to make. Increase this if indicators are not showing when they should.", new AcceptableValueRange<int>(25, 100), new ConfigurationManagerAttributes { IsAdvanced = true, Order = loadOrder-- }));
+            poolObjectsVerticality = config.Bind(ConfigAdvancedTitle, "Verticality Pool Objects", 25, new ConfigDescription("Number of indicator clones to make. Increase this if indicators are not showing when they should.", new AcceptableValueRange<int>(25, 100), new ConfigurationManagerAttributes { IsAdvanced = true, Order = loadOrder-- }));
             Panel.poolObjectsSteps = poolObjectsSteps.Value;
             Panel.poolObjectsShots = poolObjectsShots.Value;
+            Panel.poolObjectsVoice = poolObjectsVoice.Value;
+            Panel.poolObjectsVerticality = poolObjectsVerticality.Value;
 
             // Triggers
             enable.SettingChanged += Accessibility_SettingChanged;
@@ -99,7 +118,6 @@ namespace acidphantasm_accessibilityindicators
             enableShots.SettingChanged += Accessibility_SettingChanged;
             maxShotDistance.SettingChanged += Accessibility_SettingChanged;
             fadeTimeShots.SettingChanged += Accessibility_SettingChanged;
-            poolObjectsShots.SettingChanged += Accessibility_SettingChanged;
 
             enableSprintSteps.SettingChanged += Accessibility_SettingChanged;
             maxSprintDistance.SettingChanged += Accessibility_SettingChanged;
@@ -113,7 +131,14 @@ namespace acidphantasm_accessibilityindicators
             maxSneakDistance.SettingChanged += Accessibility_SettingChanged;
             fadeTimeSneak.SettingChanged += Accessibility_SettingChanged;
 
+            enableVoicelines.SettingChanged += Accessibility_SettingChanged;
+            maxVoiceDistance.SettingChanged += Accessibility_SettingChanged;
+            fadeTimeVoice.SettingChanged += Accessibility_SettingChanged;
+
+            poolObjectsShots.SettingChanged += Accessibility_SettingChanged;
             poolObjectsSteps.SettingChanged += Accessibility_SettingChanged;
+            poolObjectsVoice.SettingChanged += Accessibility_SettingChanged;
+            poolObjectsVerticality.SettingChanged += Accessibility_SettingChanged;
         }
 
         private static void Accessibility_SettingChanged(object sender, EventArgs e)
@@ -128,7 +153,6 @@ namespace acidphantasm_accessibilityindicators
             Indicators.maxShotDistance = maxShotDistance.Value;
             Indicators.fadeTimeShots = fadeTimeShots.Value;
 
-            Panel.poolObjectsShots = poolObjectsShots.Value;
 
             Indicators.enableSprintSteps = enableSprintSteps.Value;
             Indicators.maxSprintDistance = maxSprintDistance.Value;
@@ -142,7 +166,14 @@ namespace acidphantasm_accessibilityindicators
             Indicators.maxSneakDistance = maxSneakDistance.Value;
             Indicators.fadeTimeSneak = fadeTimeSneak.Value;
 
+            Indicators.enableVoicelines = enableVoicelines.Value;
+            Indicators.maxVoiceDistance = maxVoiceDistance.Value;
+            Indicators.fadeTimeVoice = fadeTimeVoice.Value;
+
             Panel.poolObjectsSteps = poolObjectsSteps.Value;
+            Panel.poolObjectsShots = poolObjectsShots.Value;
+            Panel.poolObjectsVoice = poolObjectsVoice.Value;
+            Panel.poolObjectsVerticality = poolObjectsVerticality.Value;
         }
     }
 }

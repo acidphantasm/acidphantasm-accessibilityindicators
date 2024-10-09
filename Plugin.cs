@@ -36,6 +36,8 @@ namespace acidphantasm_accessibilityindicators
             new PlayerPlayStepSoundPatch().Enable();
             new PlayerMethod50Patch().Enable();
 
+            new PhraseSpeakerClassPatch().Enable();
+
             LogSource.LogInfo("[AccessibilityIndicators] loaded!");
         }
 
@@ -56,6 +58,8 @@ namespace acidphantasm_accessibilityindicators
             Panel.IndicatorHUDPrefab = LoadAsset<GameObject>(bundle, "Canvas.prefab");
             Panel.ShotPivotPrefab = LoadAsset<GameObject>(bundle, "shotPivot.prefab");
             Panel.RunPivotPrefab = LoadAsset<GameObject>(bundle, "runPivot.prefab");
+            Panel.VoicePivotPrefab = LoadAsset<GameObject>(bundle, "voicePivot.prefab");
+            Panel.VerticalityPivotPrefab = LoadAsset<GameObject>(bundle, "verticalityPivot.prefab");
         }
         private static T LoadAsset<T>(AssetBundle bundle, string assetPath) where T : UnityEngine.Object
         {
