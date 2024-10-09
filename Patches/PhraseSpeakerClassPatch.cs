@@ -9,12 +9,6 @@ namespace acidphantasm_accessibilityindicators.Patches
 {
     internal class PhraseSpeakerClassPatch : ModulePatch
     {
-        private enum BannedPhrases
-        {
-            OnBeingHurtDissapoinment,
-            OnBeingHurt,
-            OnBreath,
-        }
         protected override MethodBase GetTargetMethod()
         {
             return AccessTools.Method(typeof(PhraseSpeakerClass), nameof(PhraseSpeakerClass.Play));
