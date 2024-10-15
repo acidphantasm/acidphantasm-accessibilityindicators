@@ -22,7 +22,7 @@ namespace acidphantasm_accessibilityindicators.IndicatorUI
         public static int poolObjectsShots;
         public static int poolObjectsSteps;
         public static int poolObjectsVoice;
-        public static int poolObjectsVerticality = 25;
+        public static int poolObjectsVerticality;
 
         public static void CreateHUD()
         {
@@ -35,6 +35,11 @@ namespace acidphantasm_accessibilityindicators.IndicatorUI
             ObjectPool.PoolVoiceIndicators(VoicePivotPrefab, HUDCenterPoint, poolObjectsVoice);
             ObjectPool.PoolVerticalityIndicators(VerticalityPivotPrefab, HUDCenterPoint, poolObjectsVerticality);
             IndicatorHUD.AddComponent<KeepNorthRotation>();
+        }
+
+        public static void Dispose()
+        {
+            KeepNorthRotation.Stop();
         }
     }
 }
