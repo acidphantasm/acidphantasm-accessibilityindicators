@@ -8,7 +8,6 @@ using static acidphantasm_accessibilityindicators.Helpers.DebugGizmos.TempCorout
 
 namespace acidphantasm_accessibilityindicators.IndicatorUI
 {
-
     internal class Indicators : MonoBehaviour
     {
         public static bool enableShots;

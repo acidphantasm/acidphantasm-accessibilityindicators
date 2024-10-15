@@ -9,8 +9,7 @@ using System.Reflection;
 
 namespace acidphantasm_accessibilityindicators
 {
-    [BepInPlugin("phantasm.acid.accessibilityindicators", "acidphantasm-AccessibilityIndicators", "1.1.0")]
-    [BepInDependency("com.SPT.core", "3.9.0")]
+    [BepInPlugin("phantasm.acid.accessibilityindicators", "acidphantasm-AccessibilityIndicators", "1.2.0")]
     public class Plugin : BaseUnityPlugin
     {
         public static ManualLogSource LogSource;
@@ -20,23 +19,26 @@ namespace acidphantasm_accessibilityindicators
         {
             LogSource = Logger;
 
+            LogSource.LogInfo("[AccessibilityIndicators] loading...");
+
+            if (!VersionChecker.CheckEftVersion(Logger, Info, Config))
+            {
+                throw new Exception($"Invalid EFT Version");
+            }
+
             Instance = this;
             DontDestroyOnLoad(this);
-
-            LogSource.LogInfo("[AccessibilityIndicators] loading...");
 
             AccessibilityIndicatorsConfig.InitAAConfig(Config);
 
             new GameWorldOnGameStartedPatch().Enable();
+            new GameWorldUnregisterPlayerPatch().Enable();
             new LevelSettingsPatch().Enable();
-
             new FirearmControllerPatch().Enable();
-
+            new PhraseSpeakerClassPatch().Enable();
             new PlayerDefaultPlayPatch().Enable();
             new PlayerPlayStepSoundPatch().Enable();
             new PlayerMethod50Patch().Enable();
-
-            new PhraseSpeakerClassPatch().Enable();
 
             LogSource.LogInfo("[AccessibilityIndicators] loaded!");
         }
