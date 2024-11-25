@@ -14,7 +14,7 @@ namespace acidphantasm_accessibilityindicators.Patches
 
         protected override MethodBase GetTargetMethod()
         {
-            playerInfo = AccessTools.Field(typeof(EFT.Player.FirearmController), "_player");
+            playerInfo = AccessTools.Field(typeof(Player.FirearmController), "_player");
             return AccessTools.Method(typeof(Player.FirearmController), nameof(Player.FirearmController.InitiateShot));
         }
 
