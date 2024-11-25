@@ -64,7 +64,7 @@ namespace acidphantasm_accessibilityindicators.Patches
         protected override MethodBase GetTargetMethod()
         {
             distanceInfo = AccessTools.Field(typeof(Player), "_distance");
-            return AccessTools.Method(typeof(Player), nameof(Player.method_50));
+            return AccessTools.Method(typeof(Player), nameof(Player.method_56));
         }
 
         [PatchPostfix]
