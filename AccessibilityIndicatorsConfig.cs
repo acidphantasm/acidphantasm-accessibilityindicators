@@ -60,7 +60,7 @@ namespace acidphantasm_accessibilityindicators
 
             // Shots
             enableShots = config.Bind(ConfigShotsTitle, "Enable Shots", true, new ConfigDescription("Enable or disable shot indicators.", null, new ConfigurationManagerAttributes { Order = loadOrder-- }));
-            maxShotDistance = config.Bind(ConfigShotsTitle, "Max Distance", 150f, new ConfigDescription("Max distance from sound to show indicator.", new AcceptableValueRange<float>(1f, 300f), new ConfigurationManagerAttributes { Order = loadOrder-- }));
+            maxShotDistance = config.Bind(ConfigShotsTitle, "Max Distance", 150f, new ConfigDescription("Max distance from sound to show indicator.", new AcceptableValueRange<float>(1f, 500f), new ConfigurationManagerAttributes { Order = loadOrder-- }));
             fadeTimeShots = config.Bind(ConfigShotsTitle, "Fade Time", 1f, new ConfigDescription("Amount of time in seconds for indicator to fade.", new AcceptableValueRange<float>(0.25f, 2f), new ConfigurationManagerAttributes { Order = loadOrder-- }));
             Indicators.enableShots = enableShots.Value;
             Indicators.maxShotDistance = maxShotDistance.Value;
@@ -69,14 +69,14 @@ namespace acidphantasm_accessibilityindicators
 
             // Steps
             enableSprintSteps = config.Bind(ConfigStepsTitle, "Enable Sprint Steps", true, new ConfigDescription("Enable or disable sprint step indicators.", null, new ConfigurationManagerAttributes { Order = loadOrder-- }));
-            maxSprintDistance = config.Bind(ConfigStepsTitle, "Max Sprint Distance", 50f, new ConfigDescription("Max distance from sound to show indicator.", new AcceptableValueRange<float>(1f, 75f), new ConfigurationManagerAttributes { Order = loadOrder-- }));
+            maxSprintDistance = config.Bind(ConfigStepsTitle, "Max Sprint Distance", 50f, new ConfigDescription("Max distance from sound to show indicator.", new AcceptableValueRange<float>(1f, 100f), new ConfigurationManagerAttributes { Order = loadOrder-- }));
             fadeTimeSprint = config.Bind(ConfigStepsTitle, "Sprint Fade Time", 0.75f, new ConfigDescription("Amount of time in seconds for indicator to fade.", new AcceptableValueRange<float>(0.25f, 2f), new ConfigurationManagerAttributes { Order = loadOrder-- }));
             Indicators.enableSprintSteps = enableSprintSteps.Value;
             Indicators.maxSprintDistance = maxSprintDistance.Value;
             Indicators.fadeTimeSprint = fadeTimeSprint.Value;
 
             enableRunSteps = config.Bind(ConfigStepsTitle, "Enable Walk Steps", true, new ConfigDescription("Enable or disable walk step indicators.", null, new ConfigurationManagerAttributes { Order = loadOrder-- }));
-            maxRunDistance = config.Bind(ConfigStepsTitle, "Max Walk Distance", 30f, new ConfigDescription("Max distance from sound to show indicator.", new AcceptableValueRange<float>(1f, 50f), new ConfigurationManagerAttributes { Order = loadOrder-- }));
+            maxRunDistance = config.Bind(ConfigStepsTitle, "Max Walk Distance", 30f, new ConfigDescription("Max distance from sound to show indicator.", new AcceptableValueRange<float>(1f, 60f), new ConfigurationManagerAttributes { Order = loadOrder-- }));
             fadeTimeRun = config.Bind(ConfigStepsTitle, "Run Fade Time", 0.75f, new ConfigDescription("Amount of time in seconds for indicator to fade.", new AcceptableValueRange<float>(0.25f, 2f), new ConfigurationManagerAttributes { Order = loadOrder-- }));
             Indicators.enableRunSteps = enableRunSteps.Value;
             Indicators.maxRunDistance = maxRunDistance.Value;
