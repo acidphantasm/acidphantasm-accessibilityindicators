@@ -33,11 +33,11 @@ namespace acidphantasm_accessibilityindicators.IndicatorUI
         public static Color enemySprintColour;
         public static Color friendSprintColour;
 
-        public static bool enableRunSteps;
-        public static float maxRunDistance;
-        public static float fadeTimeRun;
-        public static Color enemyRunColour;
-        public static Color friendRunColour;
+        public static bool enableWalkSteps;
+        public static float maxWalkDistance;
+        public static float fadeTimeWalk;
+        public static Color enemyWalkColour;
+        public static Color friendWalkColour;
 
         public static bool enableSneakSteps;
         public static float maxSneakDistance;
@@ -107,7 +107,8 @@ namespace acidphantasm_accessibilityindicators.IndicatorUI
                     maxDistance = maxSprintDistance;
                     break;
                 case EAudioMovementState.Run:
-                    maxDistance = maxRunDistance;
+                    if (!enableWalkSteps) return;
+                    maxDistance = maxWalkDistance;
                     break;
                 case EAudioMovementState.Duck:
                     maxDistance = maxSneakDistance;
@@ -361,8 +362,8 @@ namespace acidphantasm_accessibilityindicators.IndicatorUI
                     else image.color = new Color(enemySneakColour.r, enemySneakColour.g, enemySneakColour.b, alpha);
                     break;
                 case EAudioMovementState.Run:
-                    if (isTeammate) image.color = new Color(friendRunColour.r, friendRunColour.g, friendRunColour.b, alpha);
-                    else image.color = new Color(enemyRunColour.r, enemyRunColour.g, enemyRunColour.b, alpha);
+                    if (isTeammate) image.color = new Color(friendWalkColour.r, friendWalkColour.g, friendWalkColour.b, alpha);
+                    else image.color = new Color(enemyWalkColour.r, enemyWalkColour.g, enemyWalkColour.b, alpha);
                     break;
                 default:
                     return;

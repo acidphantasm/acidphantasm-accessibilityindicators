@@ -31,7 +31,7 @@ namespace acidphantasm_accessibilityindicators.IndicatorUI
             IndicatorHUD = Instantiate(IndicatorHUDPrefab);
             HUDCenterPoint = IndicatorHUD.transform.GetChild(0).gameObject;
             ObjectPool.PoolShotIndicators(ShotPivotPrefab, HUDCenterPoint, poolObjectsShots);
-            ObjectPool.PoolRunIndicators(RunPivotPrefab, HUDCenterPoint, poolObjectsSteps);
+            ObjectPool.PoolStepIndicators(RunPivotPrefab, HUDCenterPoint, poolObjectsSteps);
             ObjectPool.PoolVoiceIndicators(VoicePivotPrefab, HUDCenterPoint, poolObjectsVoice);
             ObjectPool.PoolVerticalityIndicators(VerticalityPivotPrefab, HUDCenterPoint, poolObjectsVerticality);
             IndicatorHUD.AddComponent<KeepNorthRotation>();

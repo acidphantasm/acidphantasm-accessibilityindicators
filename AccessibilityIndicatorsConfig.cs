@@ -30,12 +30,12 @@ namespace acidphantasm_accessibilityindicators
         public static ConfigEntry<Color> enemySprintColour;
         public static ConfigEntry<Color> friendSprintColour;
 
-        private const string ConfigRunTitle = "4. Run Configuration";
-        public static ConfigEntry<bool> enableRunSteps;
-        public static ConfigEntry<float> maxRunDistance;
-        public static ConfigEntry<float> fadeTimeRun;
-        public static ConfigEntry<Color> enemyRunColour;
-        public static ConfigEntry<Color> friendRunColour;
+        private const string ConfigWalkTitle = "4. Walk Configuration";
+        public static ConfigEntry<bool> enableWalkSteps;
+        public static ConfigEntry<float> maxWalkDistance;
+        public static ConfigEntry<float> fadeTimeWalk;
+        public static ConfigEntry<Color> enemyWalkColour;
+        public static ConfigEntry<Color> friendWalkColour;
 
         private const string ConfigSneakTitle = "5. Sneak Configuration";
         public static ConfigEntry<bool> enableSneakSteps;
@@ -97,16 +97,16 @@ namespace acidphantasm_accessibilityindicators
             Indicators.enemySprintColour = enemySprintColour.Value;
             Indicators.friendSprintColour = friendSprintColour.Value;
 
-            enableRunSteps = config.Bind(ConfigRunTitle, "Enable Walk Steps", true, new ConfigDescription("Enable or disable walk step indicators.", null, new ConfigurationManagerAttributes { Order = loadOrder-- }));
-            maxRunDistance = config.Bind(ConfigRunTitle, "Max Walk Distance", 30f, new ConfigDescription("Max distance from sound to show indicator.", new AcceptableValueRange<float>(1f, 60f), new ConfigurationManagerAttributes { Order = loadOrder-- }));
-            fadeTimeRun = config.Bind(ConfigRunTitle, "Run Fade Time", 0.75f, new ConfigDescription("Amount of time in seconds for indicator to fade.", new AcceptableValueRange<float>(0.25f, 2f), new ConfigurationManagerAttributes { Order = loadOrder-- }));
-            enemyRunColour = config.Bind(ConfigRunTitle, "Enemy Run Colour", new Color(0.122f, 0.094f, 0.42f), new ConfigDescription("Colour for enemy run indicators.", null, new ConfigurationManagerAttributes { Order = loadOrder-- }));
-            friendRunColour = config.Bind(ConfigRunTitle, "Friendly Run Colour", new Color(0.098f, 0.341f, 0.078f), new ConfigDescription("Colour for friendly run indicators.", null, new ConfigurationManagerAttributes { Order = loadOrder-- }));
-            Indicators.enableRunSteps = enableRunSteps.Value;
-            Indicators.maxRunDistance = maxRunDistance.Value;
-            Indicators.fadeTimeRun = fadeTimeRun.Value;
-            Indicators.enemyRunColour = enemyRunColour.Value;
-            Indicators.friendRunColour = friendRunColour.Value;
+            enableWalkSteps = config.Bind(ConfigWalkTitle, "Enable Walk Steps", true, new ConfigDescription("Enable or disable walk step indicators.", null, new ConfigurationManagerAttributes { Order = loadOrder-- }));
+            maxWalkDistance = config.Bind(ConfigWalkTitle, "Max Walk Distance", 30f, new ConfigDescription("Max distance from sound to show indicator.", new AcceptableValueRange<float>(1f, 60f), new ConfigurationManagerAttributes { Order = loadOrder-- }));
+            fadeTimeWalk = config.Bind(ConfigWalkTitle, "Walk Fade Time", 0.75f, new ConfigDescription("Amount of time in seconds for indicator to fade.", new AcceptableValueRange<float>(0.25f, 2f), new ConfigurationManagerAttributes { Order = loadOrder-- }));
+            enemyWalkColour = config.Bind(ConfigWalkTitle, "Enemy Walk Colour", new Color(0.122f, 0.094f, 0.42f), new ConfigDescription("Colour for enemy Walk indicators.", null, new ConfigurationManagerAttributes { Order = loadOrder-- }));
+            friendWalkColour = config.Bind(ConfigWalkTitle, "Friendly Walk Colour", new Color(0.098f, 0.341f, 0.078f), new ConfigDescription("Colour for friendly Walk indicators.", null, new ConfigurationManagerAttributes { Order = loadOrder-- }));
+            Indicators.enableWalkSteps = enableWalkSteps.Value;
+            Indicators.maxWalkDistance = maxWalkDistance.Value;
+            Indicators.fadeTimeWalk = fadeTimeWalk.Value;
+            Indicators.enemyWalkColour = enemyWalkColour.Value;
+            Indicators.friendWalkColour = friendWalkColour.Value;
 
             enableSneakSteps = config.Bind(ConfigSneakTitle, "Enable Sneak Steps", true, new ConfigDescription("Enable or disable sneak step indicators.", null, new ConfigurationManagerAttributes { Order = loadOrder-- }));
             maxSneakDistance = config.Bind(ConfigSneakTitle, "Max Sneak Distance", 15f, new ConfigDescription("Max distance from sound to show indicator.", new AcceptableValueRange<float>(1f, 25f), new ConfigurationManagerAttributes { Order = loadOrder-- }));
@@ -157,11 +157,11 @@ namespace acidphantasm_accessibilityindicators
             enemySprintColour.SettingChanged += Accessibility_SettingChanged;
             friendSprintColour.SettingChanged += Accessibility_SettingChanged;
 
-            enableRunSteps.SettingChanged += Accessibility_SettingChanged;
-            maxRunDistance.SettingChanged += Accessibility_SettingChanged;
-            fadeTimeRun.SettingChanged += Accessibility_SettingChanged;
-            enemyRunColour.SettingChanged += Accessibility_SettingChanged;
-            friendRunColour.SettingChanged += Accessibility_SettingChanged;
+            enableWalkSteps.SettingChanged += Accessibility_SettingChanged;
+            maxWalkDistance.SettingChanged += Accessibility_SettingChanged;
+            fadeTimeWalk.SettingChanged += Accessibility_SettingChanged;
+            enemyWalkColour.SettingChanged += Accessibility_SettingChanged;
+            friendWalkColour.SettingChanged += Accessibility_SettingChanged;
 
             enableSneakSteps.SettingChanged += Accessibility_SettingChanged;
             maxSneakDistance.SettingChanged += Accessibility_SettingChanged;
@@ -201,11 +201,11 @@ namespace acidphantasm_accessibilityindicators
             Indicators.enemySprintColour = enemySprintColour.Value;
             Indicators.friendSprintColour = friendSprintColour.Value;
 
-            Indicators.enableRunSteps = enableRunSteps.Value;
-            Indicators.maxRunDistance = maxRunDistance.Value;
-            Indicators.fadeTimeRun = fadeTimeRun.Value;
-            Indicators.enemyRunColour = enemyRunColour.Value;
-            Indicators.friendRunColour = friendRunColour.Value;
+            Indicators.enableWalkSteps = enableWalkSteps.Value;
+            Indicators.maxWalkDistance = maxWalkDistance.Value;
+            Indicators.fadeTimeWalk = fadeTimeWalk.Value;
+            Indicators.enemyWalkColour = enemyWalkColour.Value;
+            Indicators.friendWalkColour = friendWalkColour.Value;
 
             Indicators.enableSneakSteps = enableSneakSteps.Value;
             Indicators.maxSneakDistance = maxSneakDistance.Value;
