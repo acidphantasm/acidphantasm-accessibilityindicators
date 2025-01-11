@@ -263,7 +263,7 @@ namespace acidphantasm_accessibilityindicators.IndicatorUI
             GameObject selectedVerticalityIndicator;
             Image verticalityImage;
 
-            GameObject pivotIndicator = ObjectPool.GetPooledRunObject(accountID);
+            GameObject pivotIndicator = ObjectPool.GetPooledStepObject(accountID);
             GameObject sneakIndicator = pivotIndicator.transform.GetChild(0).gameObject;
             GameObject runIndicator = pivotIndicator.transform.GetChild(1).gameObject;
             GameObject sprintIndicator = pivotIndicator.transform.GetChild(2).gameObject;
