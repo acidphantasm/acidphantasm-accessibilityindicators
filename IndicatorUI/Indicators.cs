@@ -96,6 +96,7 @@ namespace acidphantasm_accessibilityindicators.IndicatorUI
         }
         public static void PrepareStep(EAudioMovementState movementState, Vector3 stepPosition, float distance, string id, bool isTeammate)
         {
+
             var player = Utils.GetMainPlayer();
             Transform camera = player.CameraPosition;
             Vector3 cameraPosition = camera.position;
@@ -104,6 +105,7 @@ namespace acidphantasm_accessibilityindicators.IndicatorUI
             switch (movementState)
             {
                 case EAudioMovementState.Sprint:
+                    if (!enableSprintSteps) return;
                     maxDistance = maxSprintDistance;
                     break;
                 case EAudioMovementState.Run:
@@ -111,6 +113,7 @@ namespace acidphantasm_accessibilityindicators.IndicatorUI
                     maxDistance = maxWalkDistance;
                     break;
                 case EAudioMovementState.Duck:
+                    if (!enableSneakSteps) return;
                     maxDistance = maxSneakDistance;
                     break;
                 default:
@@ -175,14 +178,9 @@ namespace acidphantasm_accessibilityindicators.IndicatorUI
             GameObject selectedVerticalityIndicator;
             Image vertImage;
 
-            GameObject pivotIndicator = ObjectPool.GetPooledShotObject(accountID);
-            GameObject enemyShotIndicator = pivotIndicator.transform.GetChild(0).gameObject;
-            GameObject teamShotIndicator = pivotIndicator.transform.GetChild(1).gameObject;
-            GameObject selectedShotIndicator;
-            Image image;
-
-            if (isTeammate) selectedShotIndicator = teamShotIndicator;
-            else selectedShotIndicator = enemyShotIndicator;
+            GameObject shotPivotIndicator = ObjectPool.GetPooledShotObject(accountID);
+            GameObject shotIndicator = shotPivotIndicator.transform.GetChild(0).gameObject;
+            Image image = shotIndicator.GetComponent<Image>();
 
             switch (value)
             {
@@ -206,21 +204,20 @@ namespace acidphantasm_accessibilityindicators.IndicatorUI
                     aboveArmPivotIndicator.SetActive(false);
                     break;
             }
-            image = selectedShotIndicator.GetComponent<Image>();
 
             float newMinDistance = normalizeDistance ? minNormalizedDistance : 1f;
             float newMaxDistance = normalizeDistance ? maxNormalizedDistance : maxShotDistance;
 
             float size = Utils.CustomInverseLerp(newMinDistance, newMaxDistance, scaleStepShotMax, scaleStepShotMin, shotDistance);
             float alpha = Utils.CustomInverseLerp(newMinDistance, newMaxDistance, 1f, 0.1f, shotDistance);
-            selectedShotIndicator.transform.localScale = new Vector3(size, size, 0);
-            selectedShotIndicator.transform.localPosition = new Vector3(selectedShotIndicator.transform.localPosition.x, originalShotY + indicatorOffset, selectedShotIndicator.transform.localPosition.z);
+            shotIndicator.transform.localScale = new Vector3(size, size, 0);
+            shotIndicator.transform.localPosition = new Vector3(shotIndicator.transform.localPosition.x, originalShotY + indicatorOffset, shotIndicator.transform.localPosition.z);
 
             if (isTeammate) image.color = new Color(friendShotColour.r, friendShotColour.g, friendShotColour.b, alpha);
             else image.color = new Color(enemyShotColour.r, enemyShotColour.g, enemyShotColour.b, alpha);
 
 
-            if (pivotIndicator.activeInHierarchy)
+            if (shotPivotIndicator.activeInHierarchy)
             {
                 if (verticalityPivotIndicator.activeInHierarchy && selectedVerticalityIndicator != null)
                 {
@@ -232,11 +229,11 @@ namespace acidphantasm_accessibilityindicators.IndicatorUI
                     TempCoroutine.DisableAfterRefade(verticalityPivotIndicator, vertImage, vertRunner, fadeTimeShots);
                     verticalityPivotIndicator.transform.rotation = Quaternion.Euler(0, 0, shotAngle);
                 }
-                ObjectIDInfo objectInfo = pivotIndicator.GetComponent<ObjectIDInfo>();
-                TempCoroutineRunner runner = pivotIndicator.GetComponent<TempCoroutineRunner>();
+                ObjectIDInfo objectInfo = shotPivotIndicator.GetComponent<ObjectIDInfo>();
+                TempCoroutineRunner runner = shotPivotIndicator.GetComponent<TempCoroutineRunner>();
                 runner.StopCoroutine(objectInfo._Coroutine);
-                TempCoroutine.DisableAfterRefade(pivotIndicator, image, runner, fadeTimeShots);
-                pivotIndicator.transform.rotation = Quaternion.Euler(0, 0, shotAngle);
+                TempCoroutine.DisableAfterRefade(shotPivotIndicator, image, runner, fadeTimeShots);
+                shotPivotIndicator.transform.rotation = Quaternion.Euler(0, 0, shotAngle);
                 
                 return;
             }
@@ -250,10 +247,10 @@ namespace acidphantasm_accessibilityindicators.IndicatorUI
                 TempCoroutine.DisableAfterFade(verticalityPivotIndicator, vertImage, fadeTimeShots);
             }
 
-            pivotIndicator.transform.rotation = Quaternion.Euler(0, 0, shotAngle);
-            pivotIndicator.SetActive(true);
-            selectedShotIndicator.SetActive(true);
-            TempCoroutine.DisableAfterFade(pivotIndicator, image, fadeTimeShots);
+            shotPivotIndicator.transform.rotation = Quaternion.Euler(0, 0, shotAngle);
+            shotPivotIndicator.SetActive(true);
+            shotIndicator.SetActive(true);
+            TempCoroutine.DisableAfterFade(shotPivotIndicator, image, fadeTimeShots);
         }
         private static void DrawStepIndicator(float stepAngle, float stepDistance, VerticalityValues value, EAudioMovementState movementState, string accountID, bool isTeammate)
         {
@@ -264,15 +261,12 @@ namespace acidphantasm_accessibilityindicators.IndicatorUI
             GameObject aboveIndicator = aboveArmPivotIndicator.transform.GetChild(0).gameObject;
             GameObject selectedVerticalityArmPivot;
             GameObject selectedVerticalityIndicator;
-            Image vertImage;
+            Image verticalityImage;
 
             GameObject pivotIndicator = ObjectPool.GetPooledRunObject(accountID);
-            GameObject enemySprintIndicator = pivotIndicator.transform.GetChild(0).gameObject;
-            GameObject enemySneakIndicator = pivotIndicator.transform.GetChild(2).gameObject;
-            GameObject enemyRunIndicator = pivotIndicator.transform.GetChild(4).gameObject;
-            GameObject teamSprintIndicator = pivotIndicator.transform.GetChild(1).gameObject;
-            GameObject teamSneakIndicator = pivotIndicator.transform.GetChild(3).gameObject;
-            GameObject teamRunIndicator = pivotIndicator.transform.GetChild(5).gameObject;
+            GameObject sneakIndicator = pivotIndicator.transform.GetChild(0).gameObject;
+            GameObject runIndicator = pivotIndicator.transform.GetChild(1).gameObject;
+            GameObject sprintIndicator = pivotIndicator.transform.GetChild(2).gameObject;
             GameObject selectedStepIndicator;
             Image image;
             float fadeTime;
@@ -285,19 +279,19 @@ namespace acidphantasm_accessibilityindicators.IndicatorUI
                 case VerticalityValues.Above:
                     selectedVerticalityArmPivot = aboveArmPivotIndicator;
                     selectedVerticalityIndicator = aboveIndicator;
-                    vertImage = selectedVerticalityIndicator.GetComponentInChildren<Image>();
+                    verticalityImage = selectedVerticalityIndicator.GetComponentInChildren<Image>();
                     belowArmPivotIndicator.SetActive(false);
                     break;
                 case VerticalityValues.Below:
                     selectedVerticalityArmPivot = belowArmPivotIndicator;
                     selectedVerticalityIndicator = belowIndicator;
-                    vertImage = selectedVerticalityIndicator.GetComponentInChildren<Image>();
+                    verticalityImage = selectedVerticalityIndicator.GetComponentInChildren<Image>();
                     aboveArmPivotIndicator.SetActive(false);
                     break;
                 default:
                     selectedVerticalityArmPivot = null;
                     selectedVerticalityIndicator = null;
-                    vertImage = null;
+                    verticalityImage = null;
                     belowArmPivotIndicator.SetActive(false);
                     aboveArmPivotIndicator.SetActive(false);
                     break;
@@ -305,39 +299,27 @@ namespace acidphantasm_accessibilityindicators.IndicatorUI
 
             switch (movementState)
             {
-                case EAudioMovementState.Sprint:
-                    if (!enableSprintSteps) return;
-                    if (isTeammate) selectedStepIndicator = teamSprintIndicator;
-                    else selectedStepIndicator = enemySprintIndicator;
+                case EAudioMovementState.Sprint:                    
 
-                    teamSneakIndicator.SetActive(false);
-                    teamRunIndicator.SetActive(false);
-                    enemySneakIndicator.SetActive(false);
-                    enemyRunIndicator.SetActive(false);
+                    selectedStepIndicator = sprintIndicator;
+                    sneakIndicator.SetActive(false);
+                    runIndicator.SetActive(false);
                     fadeTime = fadeTimeSprint;
                     newMaxDistance = normalizeDistance ? maxNormalizedDistance : maxSprintDistance;
                     break;
                 case EAudioMovementState.Run:
-                    if (!enableRunSteps) return;
-                    if (isTeammate) selectedStepIndicator = teamRunIndicator;
-                    else selectedStepIndicator = enemyRunIndicator;
 
-                    teamSneakIndicator.SetActive(false);
-                    teamSprintIndicator.SetActive(false);
-                    enemySneakIndicator.SetActive(false);
-                    enemySprintIndicator.SetActive(false);
-                    fadeTime = fadeTimeRun;
-                    newMaxDistance = normalizeDistance ? maxNormalizedDistance : maxRunDistance;
+                    selectedStepIndicator = runIndicator;
+                    sprintIndicator.SetActive(false);
+                    sneakIndicator.SetActive(false);
+                    fadeTime = fadeTimeWalk;
+                    newMaxDistance = normalizeDistance ? maxNormalizedDistance : maxWalkDistance;
                     break;
                 case EAudioMovementState.Duck:
-                    if (!enableSneakSteps) return;
-                    if (isTeammate) selectedStepIndicator = teamSneakIndicator;
-                    else selectedStepIndicator = enemySneakIndicator;
 
-                    teamSprintIndicator.SetActive(false);
-                    teamRunIndicator.SetActive(false);
-                    enemySprintIndicator.SetActive(false);
-                    enemyRunIndicator.SetActive(false);
+                    selectedStepIndicator = sneakIndicator;
+                    sprintIndicator.SetActive(false);
+                    runIndicator.SetActive(false);
                     fadeTime = fadeTimeSneak;
                     newMaxDistance = normalizeDistance ? maxNormalizedDistance : maxSneakDistance;
                     break;
@@ -379,7 +361,7 @@ namespace acidphantasm_accessibilityindicators.IndicatorUI
                     ObjectIDInfo vertObjectInfo = verticalityPivotIndicator.GetComponent<ObjectIDInfo>();
                     TempCoroutineRunner vertRunner = verticalityPivotIndicator.GetComponent<TempCoroutineRunner>();
                     vertRunner.StopCoroutine(vertObjectInfo._Coroutine);
-                    TempCoroutine.DisableAfterRefade(verticalityPivotIndicator, vertImage, vertRunner, fadeTime);
+                    TempCoroutine.DisableAfterRefade(verticalityPivotIndicator, verticalityImage, vertRunner, fadeTime);
                     verticalityPivotIndicator.transform.rotation = Quaternion.Euler(0, 0, stepAngle);
                 }
                 selectedStepIndicator.SetActive(true);
@@ -398,7 +380,7 @@ namespace acidphantasm_accessibilityindicators.IndicatorUI
                 verticalityPivotIndicator.SetActive(true);
                 selectedVerticalityArmPivot.SetActive(true);
                 selectedVerticalityIndicator.SetActive(true);
-                TempCoroutine.DisableAfterFade(verticalityPivotIndicator, vertImage, fadeTime);
+                TempCoroutine.DisableAfterFade(verticalityPivotIndicator, verticalityImage, fadeTime);
             }
 
             pivotIndicator.transform.rotation = Quaternion.Euler(0, 0, stepAngle);
