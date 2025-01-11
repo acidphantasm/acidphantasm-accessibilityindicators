@@ -18,7 +18,7 @@ namespace acidphantasm_accessibilityindicators.Helpers
         {
             SharedInstance = this;
         }
-        public static void PoolRunIndicators(GameObject objectToPool, GameObject parentObject, int amountToPool)
+        public static void PoolStepIndicators(GameObject objectToPool, GameObject parentObject, int amountToPool)
         {
             runIndicators = new List<GameObject>();
             GameObject tmp;
