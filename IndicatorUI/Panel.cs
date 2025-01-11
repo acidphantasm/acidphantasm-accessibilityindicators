@@ -9,7 +9,7 @@ namespace acidphantasm_accessibilityindicators.IndicatorUI
         public static GameObject IndicatorHUDPrefab;
 
         public static GameObject ShotPivotPrefab;
-        public static GameObject RunPivotPrefab;
+        public static GameObject StepPivotPrefab;
         public static GameObject VoicePivotPrefab;
         public static GameObject VerticalityPivotPrefab;
 
@@ -31,7 +31,7 @@ namespace acidphantasm_accessibilityindicators.IndicatorUI
             IndicatorHUD = Instantiate(IndicatorHUDPrefab);
             HUDCenterPoint = IndicatorHUD.transform.GetChild(0).gameObject;
             ObjectPool.PoolShotIndicators(ShotPivotPrefab, HUDCenterPoint, poolObjectsShots);
-            ObjectPool.PoolStepIndicators(RunPivotPrefab, HUDCenterPoint, poolObjectsSteps);
+            ObjectPool.PoolStepIndicators(StepPivotPrefab, HUDCenterPoint, poolObjectsSteps);
             ObjectPool.PoolVoiceIndicators(VoicePivotPrefab, HUDCenterPoint, poolObjectsVoice);
             ObjectPool.PoolVerticalityIndicators(VerticalityPivotPrefab, HUDCenterPoint, poolObjectsVerticality);
             IndicatorHUD.AddComponent<KeepNorthRotation>();

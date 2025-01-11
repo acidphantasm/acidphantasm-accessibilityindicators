@@ -59,7 +59,7 @@ namespace acidphantasm_accessibilityindicators
             }
             Panel.IndicatorHUDPrefab = LoadAsset<GameObject>(bundle, "Canvas.prefab");
             Panel.ShotPivotPrefab = LoadAsset<GameObject>(bundle, "shotPivot.prefab");
-            Panel.RunPivotPrefab = LoadAsset<GameObject>(bundle, "runPivot.prefab");
+            Panel.StepPivotPrefab = LoadAsset<GameObject>(bundle, "runPivot.prefab");
             Panel.VoicePivotPrefab = LoadAsset<GameObject>(bundle, "voicePivot.prefab");
             Panel.VerticalityPivotPrefab = LoadAsset<GameObject>(bundle, "verticalityPivot.prefab");
         }
