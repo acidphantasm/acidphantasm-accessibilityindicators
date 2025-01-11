@@ -9,7 +9,7 @@ namespace acidphantasm_accessibilityindicators.Helpers
     public class ObjectPool : MonoBehaviour
     {
         public static ObjectPool SharedInstance;
-        public static List<GameObject> runIndicators;
+        public static List<GameObject> stepIndicators;
         public static List<GameObject> shotIndicators;
         public static List<GameObject> voiceIndicators;
         public static List<GameObject> verticalityIndicators;
@@ -20,14 +20,14 @@ namespace acidphantasm_accessibilityindicators.Helpers
         }
         public static void PoolStepIndicators(GameObject objectToPool, GameObject parentObject, int amountToPool)
         {
-            runIndicators = new List<GameObject>();
+            stepIndicators = new List<GameObject>();
             GameObject tmp;
             for (int i = 0; i < amountToPool; i++)
             {
                 tmp = Instantiate(objectToPool, parentObject.transform);
                 tmp.AddComponent<ObjectIDInfo>();
                 tmp.SetActive(false);
-                runIndicators.Add(tmp);
+                stepIndicators.Add(tmp);
             }
         }
         public static void PoolVoiceIndicators(GameObject objectToPool, GameObject parentObject, int amountToPool)
@@ -73,20 +73,20 @@ namespace acidphantasm_accessibilityindicators.Helpers
             }
         }
 
-        public static GameObject GetPooledRunObject(string ownerID = "none")
+        public static GameObject GetPooledStepObject(string ownerID = "none")
         {
             var amountToPool = Panel.poolObjectsSteps;
             for (int i = 0; i < amountToPool; i++)
             {
-                ObjectIDInfo info = runIndicators[i].GetComponent<ObjectIDInfo>();
+                ObjectIDInfo info = stepIndicators[i].GetComponent<ObjectIDInfo>();
                 if (info._OwnerID == ownerID)
                 {
-                    return runIndicators[i];
+                    return stepIndicators[i];
                 }
-                if (!runIndicators[i].activeInHierarchy)
+                if (!stepIndicators[i].activeInHierarchy)
                 {
                     info._OwnerID = ownerID;
-                    return runIndicators[i];
+                    return stepIndicators[i];
                 }
             }
             return null;
