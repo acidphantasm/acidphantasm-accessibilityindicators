@@ -10,21 +10,40 @@ namespace acidphantasm_accessibilityindicators.IndicatorUI
 {
     internal class Indicators : MonoBehaviour
     {
+        private static float originalStepY = 160f;
+        private static float originalShotY = 170f;
+        private static float originalVerticalityY = 180f;
+        private static float originalVoiceY = 188f;
+
+        private static float scaleVoiceMin = 0.1f;
+        private static float scaleVoiceMax = 0.6f;
+        private static float scaleStepShotMin = 0.5f;
+        private static float scaleStepShotMax = 1.5f;
+
         public static bool enableShots;
         public static float maxShotDistance;
         public static float fadeTimeShots;
+        public static Color enemyShotColour;
+        public static Color friendShotColour;
+        public static float indicatorOffset;
 
         public static bool enableSprintSteps;
         public static float maxSprintDistance;
         public static float fadeTimeSprint;
+        public static Color enemySprintColour;
+        public static Color friendSprintColour;
 
         public static bool enableRunSteps;
         public static float maxRunDistance;
         public static float fadeTimeRun;
+        public static Color enemyRunColour;
+        public static Color friendRunColour;
 
         public static bool enableSneakSteps;
         public static float maxSneakDistance;
         public static float fadeTimeSneak;
+        public static Color enemySneakColour;
+        public static Color friendSneakColour;
 
         public static bool enableVoicelines;
         public static float maxVoiceDistance;
@@ -121,9 +140,10 @@ namespace acidphantasm_accessibilityindicators.IndicatorUI
             float newMinDistance = normalizeDistance ? minNormalizedDistance : 1f;
             float newMaxDistance = normalizeDistance ? maxNormalizedDistance : maxVoiceDistance;
 
-            float size = Utils.CustomInverseLerp(newMinDistance, newMaxDistance, 1f, 0.5f, voiceDistance);
+            float size = Utils.CustomInverseLerp(newMinDistance, newMaxDistance, scaleVoiceMax, scaleVoiceMin, voiceDistance);
             float alpha = Utils.CustomInverseLerp(newMinDistance, newMaxDistance, 1f, 0.1f, voiceDistance);
             voiceIndicator.transform.localScale = new Vector3(size, size, 0);
+            pivotArm.transform.localPosition = new Vector3(pivotArm.transform.localPosition.x, originalVoiceY + indicatorOffset, pivotArm.transform.localPosition.z);
             image.color = new Color(image.color.r, image.color.g, image.color.b, alpha);
 
             if (pivotIndicator.activeInHierarchy)
@@ -190,10 +210,14 @@ namespace acidphantasm_accessibilityindicators.IndicatorUI
             float newMinDistance = normalizeDistance ? minNormalizedDistance : 1f;
             float newMaxDistance = normalizeDistance ? maxNormalizedDistance : maxShotDistance;
 
-            float size = Utils.CustomInverseLerp(newMinDistance, newMaxDistance, 4f, 0.5f, shotDistance);
-            float alpha = Utils.CustomInverseLerp(newMinDistance, newMaxDistance, 0.75f, 0.1f, shotDistance);
+            float size = Utils.CustomInverseLerp(newMinDistance, newMaxDistance, scaleStepShotMax, scaleStepShotMin, shotDistance);
+            float alpha = Utils.CustomInverseLerp(newMinDistance, newMaxDistance, 1f, 0.1f, shotDistance);
             selectedShotIndicator.transform.localScale = new Vector3(size, size, 0);
-            image.color = new Color(image.color.r, image.color.g, image.color.b, alpha);
+            selectedShotIndicator.transform.localPosition = new Vector3(selectedShotIndicator.transform.localPosition.x, originalShotY + indicatorOffset, selectedShotIndicator.transform.localPosition.z);
+
+            if (isTeammate) image.color = new Color(friendShotColour.r, friendShotColour.g, friendShotColour.b, alpha);
+            else image.color = new Color(enemyShotColour.r, enemyShotColour.g, enemyShotColour.b, alpha);
+
 
             if (pivotIndicator.activeInHierarchy)
             {
@@ -321,16 +345,34 @@ namespace acidphantasm_accessibilityindicators.IndicatorUI
             }
 
             image = selectedStepIndicator.GetComponent<Image>();
-
-            float size = Utils.CustomInverseLerp(newMinDistance, newMaxDistance, 4f, 0.5f, stepDistance);
-            float alpha = Utils.CustomInverseLerp(newMinDistance, newMaxDistance, 0.75f, 0.1f, stepDistance);
+            float size = Utils.CustomInverseLerp(newMinDistance, newMaxDistance, scaleStepShotMax, scaleStepShotMin, stepDistance);
+            float alpha = Utils.CustomInverseLerp(newMinDistance, newMaxDistance, 1f, 0.1f, stepDistance);
             selectedStepIndicator.transform.localScale = new Vector3(size, size, 0);
-            image.color = new Color(image.color.r, image.color.g, image.color.b, alpha);
+            selectedStepIndicator.transform.localPosition = new Vector3(selectedStepIndicator.transform.localPosition.x, originalStepY + indicatorOffset, selectedStepIndicator.transform.localPosition.z);
+
+            switch (movementState)
+            {
+                case EAudioMovementState.Sprint:
+                    if (isTeammate) image.color = new Color(friendSprintColour.r, friendSprintColour.g, friendSprintColour.b, alpha);
+                    else image.color = new Color(enemySprintColour.r, enemySprintColour.g, enemySprintColour.b, alpha);
+                    break;
+                case EAudioMovementState.Duck:
+                    if (isTeammate) image.color = new Color(friendSneakColour.r, friendSneakColour.g, friendSneakColour.b, alpha);
+                    else image.color = new Color(enemySneakColour.r, enemySneakColour.g, enemySneakColour.b, alpha);
+                    break;
+                case EAudioMovementState.Run:
+                    if (isTeammate) image.color = new Color(friendRunColour.r, friendRunColour.g, friendRunColour.b, alpha);
+                    else image.color = new Color(enemyRunColour.r, enemyRunColour.g, enemyRunColour.b, alpha);
+                    break;
+                default:
+                    return;
+            }
 
             if (pivotIndicator.activeInHierarchy)
             {
                 if (verticalityPivotIndicator.activeInHierarchy && selectedVerticalityIndicator != null)
                 {
+                    selectedVerticalityArmPivot.transform.localPosition = new Vector3(selectedVerticalityArmPivot.transform.localPosition.x, originalVerticalityY + indicatorOffset, selectedVerticalityArmPivot.transform.localPosition.z);
                     selectedVerticalityIndicator.SetActive(true);
                     selectedVerticalityArmPivot.SetActive(true);
                     ObjectIDInfo vertObjectInfo = verticalityPivotIndicator.GetComponent<ObjectIDInfo>();
@@ -350,6 +392,7 @@ namespace acidphantasm_accessibilityindicators.IndicatorUI
 
             if (selectedVerticalityIndicator != null)
             {
+                selectedVerticalityArmPivot.transform.localPosition = new Vector3(selectedVerticalityArmPivot.transform.localPosition.x, originalVerticalityY + indicatorOffset, selectedVerticalityArmPivot.transform.localPosition.z);
                 verticalityPivotIndicator.transform.rotation = Quaternion.Euler(0, 0, stepAngle);
                 verticalityPivotIndicator.SetActive(true);
                 selectedVerticalityArmPivot.SetActive(true);
