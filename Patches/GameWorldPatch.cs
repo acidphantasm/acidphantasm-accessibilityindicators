@@ -32,7 +32,7 @@ namespace acidphantasm_accessibilityindicators.Patches
         public static void PatchPostFix(IPlayer iPlayer)
         {
             Player player = iPlayer as Player;
-            if (player.IsYourPlayer) Panel.Dispose();
+            if (player.IsYourPlayer && Panel.IndicatorHUD != null) Panel.Dispose();
         }
     }
 }

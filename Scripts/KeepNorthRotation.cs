@@ -6,7 +6,13 @@ namespace acidphantasm_accessibilityindicators.Scripts
 {
     internal class KeepNorthRotation : MonoBehaviour
     {
-        public static bool isActuallyActive = true;
+        private bool isActuallyActive;
+
+        public void Awake()
+        {
+            isActuallyActive = true;
+        }
+
         public void Update()
         {
             if (isActuallyActive)
@@ -19,8 +25,9 @@ namespace acidphantasm_accessibilityindicators.Scripts
             }
         }
 
-        public static void Stop()
+        public void Stop()
         {
+            Plugin.LogSource.LogInfo("[Accessibility Indicators] KeepNorthRotation Disabled");
             isActuallyActive = false;
         }
     }

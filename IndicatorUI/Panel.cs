@@ -24,6 +24,8 @@ namespace acidphantasm_accessibilityindicators.IndicatorUI
         public static int poolObjectsVoice;
         public static int poolObjectsVerticality;
 
+        private static KeepNorthRotation keepNorthRotationScript;
+
         public static void CreateHUD()
         {
             if (IndicatorHUD != null) return;
@@ -35,11 +37,14 @@ namespace acidphantasm_accessibilityindicators.IndicatorUI
             ObjectPool.PoolVoiceIndicators(VoicePivotPrefab, HUDCenterPoint, poolObjectsVoice);
             ObjectPool.PoolVerticalityIndicators(VerticalityPivotPrefab, HUDCenterPoint, poolObjectsVerticality);
             IndicatorHUD.AddComponent<KeepNorthRotation>();
+            keepNorthRotationScript = IndicatorHUD.GetOrAddComponent<KeepNorthRotation>();
+            Plugin.LogSource.LogInfo("[Accessibility Indicators] Creating HUD");
         }
 
         public static void Dispose()
         {
-            KeepNorthRotation.Stop();
+            Plugin.LogSource.LogInfo("[Accessibility Indicators] Cleaning up HUD");
+            keepNorthRotationScript.Stop();
         }
     }
 }
