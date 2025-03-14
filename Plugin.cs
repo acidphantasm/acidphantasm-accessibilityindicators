@@ -51,7 +51,7 @@ namespace acidphantasm_accessibilityindicators
         public static void LoadBundle()
         {
             var directory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            var assetBundle = Path.Combine(directory, "Assets", "accessibility.bundle");
+            var assetBundle = Path.Combine(directory, "Assets", "accessibilityindicators.bundle");
             var bundle = AssetBundle.LoadFromFile(assetBundle);
             if (bundle == null)
             {

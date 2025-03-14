@@ -109,7 +109,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConfigurationManagerAttributes.cs" />
-    <Compile Include="Helpers\DebugGizmos.cs" />
+    <Compile Include="Helpers\CoroutineExtension.cs" />
+    <Compile Include="Helpers\CoroutineHandler.cs" />
     <Compile Include="Helpers\ObjectIDInfo.cs" />
     <Compile Include="Helpers\ObjectPool.cs" />
     <Compile Include="Helpers\Utils.cs" />
@@ -128,7 +129,7 @@
     <Compile Include="VersionChecker.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\accessibility.bundle" />
+    <None Include="Assets\accessibilityindicators.bundle" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

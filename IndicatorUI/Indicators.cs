@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 using acidphantasm_accessibilityindicators.Helpers;
-using static acidphantasm_accessibilityindicators.Helpers.DebugGizmos;
 using Audio.Data;
 using Image = UnityEngine.UI.Image;
-using static acidphantasm_accessibilityindicators.Helpers.DebugGizmos.TempCoroutine;
+using CommonAssets.Scripts.Audio;
+using EFT;
 
 
 namespace acidphantasm_accessibilityindicators.IndicatorUI
@@ -15,10 +15,12 @@ namespace acidphantasm_accessibilityindicators.IndicatorUI
         private static float originalVerticalityY = 180f;
         private static float originalVoiceY = 188f;
 
-        private static float scaleVoiceMin = 0.1f;
-        private static float scaleVoiceMax = 0.6f;
-        private static float scaleStepShotMin = 0.5f;
-        private static float scaleStepShotMax = 1.5f;
+        private static float scaleVoiceMin = 0.05f;
+        private static float scaleVoiceMax = 0.2f;
+        private static float scaleShotMin = 0.25f;
+        private static float scaleShotMax = 1.25f;
+        private static float scaleStepMin = 0.05f;
+        private static float scaleStepMax = 1.25f;
 
         public static bool enableShots;
         public static float maxShotDistance;
@@ -63,6 +65,8 @@ namespace acidphantasm_accessibilityindicators.IndicatorUI
             Vector3 cameraPosition = camera.position;
 
             float voiceDistance = Utils.GetDistance(cameraPosition, voicePosition);
+            if (voiceDistance > maxVoiceDistance) return;
+
             Vector3 voiceDirection = voicePosition - cameraPosition;
 
             float voiceAngle = Utils.GetAngle(voiceDirection);
@@ -81,22 +85,20 @@ namespace acidphantasm_accessibilityindicators.IndicatorUI
             Vector3 cameraPosition = camera.position;
 
             var shotDistance = Utils.GetDistance(cameraPosition, shotPosition);
+            if (shotDistance > maxShotDistance) return; 
+
             var shotDirection = shotPosition - cameraPosition;
 
             var shotAngle = Utils.GetAngle(shotDirection);
             var playerAngle = Utils.GetLookAngle(camera.eulerAngles);
-
             var realShotAngle = shotAngle + playerAngle;
 
             VerticalityValues value = Utils.AboveOrBelowCheck(cameraPosition.y, shotPosition.y);
-
             if (realShotAngle > 360) realShotAngle = realShotAngle - 360;
-
-            if (shotDistance <= maxShotDistance) DrawShotIndicator(realShotAngle, shotDistance, value, id, isTeammate);
+            DrawShotIndicator(realShotAngle, shotDistance, value, id, isTeammate);
         }
         public static void PrepareStep(EAudioMovementState movementState, Vector3 stepPosition, float distance, string id, bool isTeammate)
         {
-
             var player = Utils.GetMainPlayer();
             Transform camera = player.CameraPosition;
             Vector3 cameraPosition = camera.position;
@@ -119,6 +121,7 @@ namespace acidphantasm_accessibilityindicators.IndicatorUI
                 default:
                     return;
             }
+            if (distance > maxDistance) return;
 
             var stepDirection = stepPosition - cameraPosition;
 
@@ -131,7 +134,7 @@ namespace acidphantasm_accessibilityindicators.IndicatorUI
 
             if (realStepAngle > 360) realStepAngle = realStepAngle - 360;
 
-            if (distance <= maxDistance) DrawStepIndicator(realStepAngle, distance, value, movementState, id, isTeammate);
+            DrawStepIndicator(realStepAngle, distance, value, movementState, id, isTeammate);
         }
         private static void DrawVoiceIndicator(float voiceAngle, float voiceDistance, string accountID, bool isTeammate)
         {
@@ -150,22 +153,12 @@ namespace acidphantasm_accessibilityindicators.IndicatorUI
             pivotArm.transform.localPosition = new Vector3(pivotArm.transform.localPosition.x, originalVoiceY + indicatorOffset, pivotArm.transform.localPosition.z);
             image.color = new Color(image.color.r, image.color.g, image.color.b, alpha);
 
-            if (pivotIndicator.activeInHierarchy)
-            {
-                ObjectIDInfo objectInfo = pivotIndicator.GetComponent<ObjectIDInfo>();
-                TempCoroutineRunner runner = pivotIndicator.GetComponent<TempCoroutineRunner>();
-                runner.StopCoroutine(objectInfo._Coroutine);
-                TempCoroutine.DisableAfterRefade(pivotIndicator, image, runner, fadeTimeVoice);
-                pivotIndicator.transform.rotation = Quaternion.Euler(0, 0, voiceAngle);
-                return;
-            }
-
             pivotIndicator.transform.rotation = Quaternion.Euler(0, 0, voiceAngle);
             pivotIndicator.SetActive(true);
             pivotArm.SetActive(true);
             voiceIndicator.SetActive(true);
 
-            TempCoroutine.DisableAfterFade(pivotIndicator, image, fadeTimeVoice);
+            pivotIndicator.GetOrAddComponent<CoroutineHandler>().StartRestartFade(pivotIndicator, image, fadeTimeVoice);
         }
         private static void DrawShotIndicator(float shotAngle, float shotDistance, VerticalityValues value, string accountID, bool isTeammate)
         {
@@ -208,7 +201,7 @@ namespace acidphantasm_accessibilityindicators.IndicatorUI
             float newMinDistance = normalizeDistance ? minNormalizedDistance : 1f;
             float newMaxDistance = normalizeDistance ? maxNormalizedDistance : maxShotDistance;
 
-            float size = Utils.CustomInverseLerp(newMinDistance, newMaxDistance, scaleStepShotMax, scaleStepShotMin, shotDistance);
+            float size = Utils.CustomInverseLerp(newMinDistance, newMaxDistance, scaleShotMax, scaleShotMin, shotDistance);
             float alpha = Utils.CustomInverseLerp(newMinDistance, newMaxDistance, 1f, 0.1f, shotDistance);
             shotIndicator.transform.localScale = new Vector3(size, size, 0);
             shotIndicator.transform.localPosition = new Vector3(shotIndicator.transform.localPosition.x, originalShotY + indicatorOffset, shotIndicator.transform.localPosition.z);
@@ -217,40 +210,19 @@ namespace acidphantasm_accessibilityindicators.IndicatorUI
             else image.color = new Color(enemyShotColour.r, enemyShotColour.g, enemyShotColour.b, alpha);
 
 
-            if (shotPivotIndicator.activeInHierarchy)
-            {
-                if (verticalityPivotIndicator.activeInHierarchy && selectedVerticalityIndicator != null)
-                {
-                    selectedVerticalityIndicator.SetActive(true);
-                    selectedVerticalityArmPivot.SetActive(true);
-                    ObjectIDInfo vertObjectInfo = verticalityPivotIndicator.GetComponent<ObjectIDInfo>();
-                    TempCoroutineRunner vertRunner = verticalityPivotIndicator.GetComponent<TempCoroutineRunner>();
-                    vertRunner.StopCoroutine(vertObjectInfo._Coroutine);
-                    TempCoroutine.DisableAfterRefade(verticalityPivotIndicator, vertImage, vertRunner, fadeTimeShots);
-                    verticalityPivotIndicator.transform.rotation = Quaternion.Euler(0, 0, shotAngle);
-                }
-                ObjectIDInfo objectInfo = shotPivotIndicator.GetComponent<ObjectIDInfo>();
-                TempCoroutineRunner runner = shotPivotIndicator.GetComponent<TempCoroutineRunner>();
-                runner.StopCoroutine(objectInfo._Coroutine);
-                TempCoroutine.DisableAfterRefade(shotPivotIndicator, image, runner, fadeTimeShots);
-                shotPivotIndicator.transform.rotation = Quaternion.Euler(0, 0, shotAngle);
-                
-                return;
-            }
-
             if (selectedVerticalityIndicator != null)
             {
                 verticalityPivotIndicator.transform.rotation = Quaternion.Euler(0, 0, shotAngle);
                 verticalityPivotIndicator.SetActive(true);
                 selectedVerticalityArmPivot.SetActive(true);
                 selectedVerticalityIndicator.SetActive(true);
-                TempCoroutine.DisableAfterFade(verticalityPivotIndicator, vertImage, fadeTimeShots);
+                verticalityPivotIndicator.GetOrAddComponent<CoroutineHandler>().StartRestartFade(verticalityPivotIndicator, vertImage, fadeTimeShots);
             }
 
             shotPivotIndicator.transform.rotation = Quaternion.Euler(0, 0, shotAngle);
             shotPivotIndicator.SetActive(true);
             shotIndicator.SetActive(true);
-            TempCoroutine.DisableAfterFade(shotPivotIndicator, image, fadeTimeShots);
+            shotPivotIndicator.GetOrAddComponent<CoroutineHandler>().StartRestartFade(shotPivotIndicator, image, fadeTimeShots);
         }
         private static void DrawStepIndicator(float stepAngle, float stepDistance, VerticalityValues value, EAudioMovementState movementState, string accountID, bool isTeammate)
         {
@@ -264,13 +236,10 @@ namespace acidphantasm_accessibilityindicators.IndicatorUI
             Image verticalityImage;
 
             GameObject pivotIndicator = ObjectPool.GetPooledStepObject(accountID);
-            GameObject sneakIndicator = pivotIndicator.transform.GetChild(0).gameObject;
-            GameObject runIndicator = pivotIndicator.transform.GetChild(1).gameObject;
-            GameObject sprintIndicator = pivotIndicator.transform.GetChild(2).gameObject;
-            GameObject selectedStepIndicator;
-            Image image;
-            float fadeTime;
+            GameObject selectedStepIndicator = pivotIndicator.transform.GetChild(0).gameObject;
+            Image image = selectedStepIndicator.GetComponent<Image>();
 
+            float fadeTime;
             float newMinDistance = normalizeDistance ? minNormalizedDistance : 1f;
             float newMaxDistance;
 
@@ -299,27 +268,15 @@ namespace acidphantasm_accessibilityindicators.IndicatorUI
 
             switch (movementState)
             {
-                case EAudioMovementState.Sprint:                    
-
-                    selectedStepIndicator = sprintIndicator;
-                    sneakIndicator.SetActive(false);
-                    runIndicator.SetActive(false);
+                case EAudioMovementState.Sprint:
                     fadeTime = fadeTimeSprint;
                     newMaxDistance = normalizeDistance ? maxNormalizedDistance : maxSprintDistance;
                     break;
                 case EAudioMovementState.Run:
-
-                    selectedStepIndicator = runIndicator;
-                    sprintIndicator.SetActive(false);
-                    sneakIndicator.SetActive(false);
                     fadeTime = fadeTimeWalk;
                     newMaxDistance = normalizeDistance ? maxNormalizedDistance : maxWalkDistance;
                     break;
                 case EAudioMovementState.Duck:
-
-                    selectedStepIndicator = sneakIndicator;
-                    sprintIndicator.SetActive(false);
-                    runIndicator.SetActive(false);
                     fadeTime = fadeTimeSneak;
                     newMaxDistance = normalizeDistance ? maxNormalizedDistance : maxSneakDistance;
                     break;
@@ -327,8 +284,7 @@ namespace acidphantasm_accessibilityindicators.IndicatorUI
                     return;
             }
 
-            image = selectedStepIndicator.GetComponent<Image>();
-            float size = Utils.CustomInverseLerp(newMinDistance, newMaxDistance, scaleStepShotMax, scaleStepShotMin, stepDistance);
+            float size = Utils.CustomInverseLerp(newMinDistance, newMaxDistance, scaleStepMax, scaleStepMin, stepDistance);
             float alpha = Utils.CustomInverseLerp(newMinDistance, newMaxDistance, 1f, 0.1f, stepDistance);
             selectedStepIndicator.transform.localScale = new Vector3(size, size, 0);
             selectedStepIndicator.transform.localPosition = new Vector3(selectedStepIndicator.transform.localPosition.x, originalStepY + indicatorOffset, selectedStepIndicator.transform.localPosition.z);
@@ -351,28 +307,6 @@ namespace acidphantasm_accessibilityindicators.IndicatorUI
                     return;
             }
 
-            if (pivotIndicator.activeInHierarchy)
-            {
-                if (verticalityPivotIndicator.activeInHierarchy && selectedVerticalityIndicator != null)
-                {
-                    selectedVerticalityArmPivot.transform.localPosition = new Vector3(selectedVerticalityArmPivot.transform.localPosition.x, originalVerticalityY + indicatorOffset, selectedVerticalityArmPivot.transform.localPosition.z);
-                    selectedVerticalityIndicator.SetActive(true);
-                    selectedVerticalityArmPivot.SetActive(true);
-                    ObjectIDInfo vertObjectInfo = verticalityPivotIndicator.GetComponent<ObjectIDInfo>();
-                    TempCoroutineRunner vertRunner = verticalityPivotIndicator.GetComponent<TempCoroutineRunner>();
-                    vertRunner.StopCoroutine(vertObjectInfo._Coroutine);
-                    TempCoroutine.DisableAfterRefade(verticalityPivotIndicator, verticalityImage, vertRunner, fadeTime);
-                    verticalityPivotIndicator.transform.rotation = Quaternion.Euler(0, 0, stepAngle);
-                }
-                selectedStepIndicator.SetActive(true);
-                ObjectIDInfo objectInfo = pivotIndicator.GetComponent<ObjectIDInfo>();
-                TempCoroutineRunner runner = pivotIndicator.GetComponent<TempCoroutineRunner>();
-                runner.StopCoroutine(objectInfo._Coroutine);
-                TempCoroutine.DisableAfterRefade(pivotIndicator, image, runner, fadeTime);
-                pivotIndicator.transform.rotation = Quaternion.Euler(0, 0, stepAngle);
-                return;
-            }
-
             if (selectedVerticalityIndicator != null)
             {
                 selectedVerticalityArmPivot.transform.localPosition = new Vector3(selectedVerticalityArmPivot.transform.localPosition.x, originalVerticalityY + indicatorOffset, selectedVerticalityArmPivot.transform.localPosition.z);
@@ -380,13 +314,13 @@ namespace acidphantasm_accessibilityindicators.IndicatorUI
                 verticalityPivotIndicator.SetActive(true);
                 selectedVerticalityArmPivot.SetActive(true);
                 selectedVerticalityIndicator.SetActive(true);
-                TempCoroutine.DisableAfterFade(verticalityPivotIndicator, verticalityImage, fadeTime);
+                verticalityPivotIndicator.GetOrAddComponent<CoroutineHandler>().StartRestartFade(verticalityPivotIndicator, verticalityImage, fadeTime);
             }
 
             pivotIndicator.transform.rotation = Quaternion.Euler(0, 0, stepAngle);
             pivotIndicator.SetActive(true);
             selectedStepIndicator.SetActive(true);
-            TempCoroutine.DisableAfterFade(pivotIndicator, image, fadeTime);
+            pivotIndicator.GetOrAddComponent<CoroutineHandler>().StartRestartFade(pivotIndicator, image, fadeTime);
         }
     }
 }

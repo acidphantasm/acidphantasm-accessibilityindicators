@@ -1,6 +1,7 @@
 ﻿using acidphantasm_accessibilityindicators.Helpers;
 using acidphantasm_accessibilityindicators.IndicatorUI;
 using Audio.Data;
+using CommonAssets.Scripts.Audio;
 using EFT;
 using HarmonyLib;
 using SPT.Reflection.Patching;
@@ -64,7 +65,7 @@ namespace acidphantasm_accessibilityindicators.Patches
         protected override MethodBase GetTargetMethod()
         {
             distanceInfo = AccessTools.Field(typeof(Player), "_distance");
-            return AccessTools.Method(typeof(Player), nameof(Player.method_56));
+            return AccessTools.Method(typeof(Player), nameof(Player.method_59));
         }
 
         [PatchPostfix]

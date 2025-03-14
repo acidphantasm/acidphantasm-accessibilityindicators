@@ -26,8 +26,6 @@ namespace acidphantasm_accessibilityindicators.Patches
                 || !Indicators.enableVoicelines
                 || (!player.IsAI && Utils.IsGroupedWithMainPlayer(player) && !Indicators.showTeammates)) return;
 
-            //Plugin.LogSource.LogInfo($"Talking: {player.AccountId} | {trigger}");
-
             bool isTeammate = Utils.IsGroupedWithMainPlayer(player);
             Indicators.PrepareVoice(player.Position, player.AccountId, isTeammate);
 
