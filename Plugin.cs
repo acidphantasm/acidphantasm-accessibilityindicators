@@ -9,7 +9,7 @@ using System.Reflection;
 
 namespace acidphantasm_accessibilityindicators
 {
-    [BepInPlugin("phantasm.acid.accessibilityindicators", "acidphantasm-AccessibilityIndicators", "1.4.1")]
+    [BepInPlugin("com.acidphantasm.accessibilityindicators", "acidphantasm-AccessibilityIndicators", "1.5.0")]
     public class Plugin : BaseUnityPlugin
     {
         public static ManualLogSource LogSource;
