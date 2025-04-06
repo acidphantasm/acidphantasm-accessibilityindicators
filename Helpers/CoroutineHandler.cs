@@ -29,11 +29,8 @@ namespace acidphantasm_accessibilityindicators.Helpers
                     img.color = currentColor;
                 }
 
-                if (coroutineHandle == null)
-                {
-                    obj.transform.rotation = Quaternion.identity;
-                    obj.SetActive(false);
-                }
+                obj.transform.rotation = Quaternion.identity;
+                obj.SetActive(false);
             }
         }
     }
