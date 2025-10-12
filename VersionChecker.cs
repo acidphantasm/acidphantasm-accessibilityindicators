@@ -28,7 +28,7 @@ namespace acidphantasm_accessibilityindicators
             {
                 return Assembly.GetExecutingAssembly()
                     .GetCustomAttributes(typeof(VersionChecker), false)
-                    ?.Cast<VersionChecker>()?.FirstOrDefault()?.version ?? 35392;
+                    ?.Cast<VersionChecker>()?.FirstOrDefault()?.version ?? 40087;
             }
         }
 
