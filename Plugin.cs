@@ -9,7 +9,7 @@ using System.Reflection;
 
 namespace acidphantasm_accessibilityindicators
 {
-    [BepInPlugin("com.acidphantasm.accessibilityindicators", "acidphantasm-AccessibilityIndicators", "2.0.0")]
+    [BepInPlugin("com.acidphantasm.accessibilityindicators", "acidphantasm-AccessibilityIndicators", "2.0.1")]
     public class Plugin : BaseUnityPlugin
     {
         public static ManualLogSource LogSource;
@@ -38,7 +38,7 @@ namespace acidphantasm_accessibilityindicators
             new PhraseSpeakerClassPatch().Enable();
             new PlayerDefaultPlayPatch().Enable();
             new PlayerPlayStepSoundPatch().Enable();
-            new PlayerMethod50Patch().Enable();
+            new PlayerMethod61Patch().Enable();
 
             LogSource.LogInfo("[AccessibilityIndicators] loaded!");
         }

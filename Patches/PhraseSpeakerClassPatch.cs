@@ -27,7 +27,7 @@ namespace acidphantasm_accessibilityindicators.Patches
                 || (!player.IsAI && Utils.IsGroupedWithMainPlayer(player) && !Indicators.showTeammates)) return;
 
             bool isTeammate = Utils.IsGroupedWithMainPlayer(player);
-            Indicators.PrepareVoice(player.Position, player.AccountId, isTeammate);
+            Indicators.PrepareVoice(player.Position, player.ProfileId, isTeammate);
 
         }
     }

@@ -31,7 +31,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <TarkovDir Condition=" '$(TarkovDir)' == '' ">D:\SPT 3.11 DEV\</TarkovDir>
+    <TarkovDir Condition=" '$(TarkovDir)' == '' ">D:\SPT 4.0.0 DEV\</TarkovDir>
     <TarkovPluginsSPTDir>$(TarkovDir)BepInEx\plugins\spt\</TarkovPluginsSPTDir>
     <TarkovManagedDir>$(TarkovDir)EscapeFromTarkov_Data\Managed\</TarkovManagedDir>
     <TarkovBepInExCoreDir>$(TarkovDir)BepInEx\core\</TarkovBepInExCoreDir>

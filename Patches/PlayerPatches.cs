@@ -31,7 +31,7 @@ namespace acidphantasm_accessibilityindicators.Patches
             float distance = (float)distanceInfo.GetValue(__instance);
             bool isTeammate = Utils.IsGroupedWithMainPlayer(__instance);
 
-            Indicators.PrepareStep(movementState, position, distance, __instance.AccountId, isTeammate);
+            Indicators.PrepareStep(movementState, position, distance, __instance.ProfileId, isTeammate);
         }
     }
     internal class PlayerPlayStepSoundPatch : ModulePatch
@@ -56,16 +56,16 @@ namespace acidphantasm_accessibilityindicators.Patches
             EAudioMovementState eaudioMovementState = ((__instance.Pose == EPlayerPose.Duck) ? EAudioMovementState.Duck : EAudioMovementState.Run);
             bool isTeammate = Utils.IsGroupedWithMainPlayer(__instance);
 
-            Indicators.PrepareStep(eaudioMovementState, position, distance, __instance.AccountId, isTeammate);
+            Indicators.PrepareStep(eaudioMovementState, position, distance, __instance.ProfileId, isTeammate);
         }
     }
-    internal class PlayerMethod50Patch : ModulePatch
+    internal class PlayerMethod61Patch : ModulePatch
     {
         private static FieldInfo distanceInfo;
         protected override MethodBase GetTargetMethod()
         {
             distanceInfo = AccessTools.Field(typeof(Player), "_distance");
-            return AccessTools.Method(typeof(Player), nameof(Player.method_59));
+            return AccessTools.Method(typeof(Player), nameof(Player.method_61));
         }
 
         [PatchPostfix]
@@ -82,7 +82,7 @@ namespace acidphantasm_accessibilityindicators.Patches
                 float distance = (float)distanceInfo.GetValue(__instance);
                 var movementState = EAudioMovementState.Sprint;
                 bool isTeammate = Utils.IsGroupedWithMainPlayer(__instance);
-                Indicators.PrepareStep(movementState, position, distance, __instance.AccountId, isTeammate);
+                Indicators.PrepareStep(movementState, position, distance, __instance.ProfileId, isTeammate);
             }
         }
     }

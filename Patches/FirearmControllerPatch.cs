@@ -32,7 +32,7 @@ namespace acidphantasm_accessibilityindicators.Patches
 
             bool isTeammate = Utils.IsGroupedWithMainPlayer(player);
 
-            Indicators.PrepareShot(shotPosition, player.AccountId, isTeammate);
+            Indicators.PrepareShot(shotPosition, player.ProfileId, isTeammate);
         }
     }
 }
