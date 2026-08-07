@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-namespace acidphantasm_accessibilityindicators.Helpers
+namespace AccessibilityIndicators.Helpers
 {
     public static class CoroutineExtension
     {

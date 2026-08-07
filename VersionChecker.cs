@@ -2,16 +2,12 @@
 using BepInEx.Configuration;
 using BepInEx.Logging;
 using BepInEx;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
-namespace acidphantasm_accessibilityindicators
+namespace AccessibilityIndicators
 {
     internal class VersionChecker
     {
@@ -28,7 +24,7 @@ namespace acidphantasm_accessibilityindicators
             {
                 return Assembly.GetExecutingAssembly()
                     .GetCustomAttributes(typeof(VersionChecker), false)
-                    ?.Cast<VersionChecker>()?.FirstOrDefault()?.version ?? 40087;
+                    ?.Cast<VersionChecker>()?.FirstOrDefault()?.version ?? 40743;
             }
         }
 

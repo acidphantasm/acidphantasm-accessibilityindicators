@@ -1,15 +1,15 @@
 ﻿using BepInEx.Logging;
 using BepInEx;
 using System;
-using acidphantasm_accessibilityindicators.Patches;
-using acidphantasm_accessibilityindicators.IndicatorUI;
+using AccessibilityIndicators.Patches;
+using AccessibilityIndicators.IndicatorUI;
 using System.IO;
 using UnityEngine;
 using System.Reflection;
 
-namespace acidphantasm_accessibilityindicators
+namespace AccessibilityIndicators
 {
-    [BepInPlugin("com.acidphantasm.accessibilityindicators", "acidphantasm-AccessibilityIndicators", "2.0.1")]
+    [BepInPlugin("com.acidphantasm.accessibilityindicators", "acidphantasm-AccessibilityIndicators", "2.1.0")]
     public class Plugin : BaseUnityPlugin
     {
         public static ManualLogSource LogSource;
@@ -18,9 +18,6 @@ namespace acidphantasm_accessibilityindicators
         internal void Awake()
         {
             LogSource = Logger;
-
-            LogSource.LogInfo("[AccessibilityIndicators] loading...");
-
             if (!VersionChecker.CheckEftVersion(Logger, Info, Config))
             {
                 throw new Exception($"Invalid EFT Version");
@@ -36,23 +33,19 @@ namespace acidphantasm_accessibilityindicators
             new LevelSettingsPatch().Enable();
             new FirearmControllerPatch().Enable();
             new PhraseSpeakerClassPatch().Enable();
-            new PlayerDefaultPlayPatch().Enable();
-            new PlayerPlayStepSoundPatch().Enable();
-            new PlayerMethod61Patch().Enable();
-
-            LogSource.LogInfo("[AccessibilityIndicators] loaded!");
-        }
-
-        private void Start()
-        {
+            new DefaultPlayPatch().Enable();
+            new PlayStepSoundPatch().Enable();
+            new PlayGearSoundPatch().Enable();
+            
             LoadBundle();
         }
 
-        public static void LoadBundle()
+        private static void LoadBundle()
         {
             var directory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             var assetBundle = Path.Combine(directory, "assets", "accessibilityindicators.bundle");
             var bundle = AssetBundle.LoadFromFile(assetBundle);
+            
             if (bundle == null)
             {
                 throw new Exception($"Error loading bundles");
@@ -62,7 +55,13 @@ namespace acidphantasm_accessibilityindicators
             Panel.StepPivotPrefab = LoadAsset<GameObject>(bundle, "runPivot.prefab");
             Panel.VoicePivotPrefab = LoadAsset<GameObject>(bundle, "voicePivot.prefab");
             Panel.VerticalityPivotPrefab = LoadAsset<GameObject>(bundle, "verticalityPivot.prefab");
+
+            if (Panel.IndicatorHUDPrefab == null)
+            {
+                LogSource.LogInfo("Indicator HUD Prefab is null");
+            }
         }
+        
         private static T LoadAsset<T>(AssetBundle bundle, string assetPath) where T : UnityEngine.Object
         {
             T asset = bundle.LoadAsset<T>(assetPath);

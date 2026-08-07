@@ -1,5 +1,5 @@
-﻿using acidphantasm_accessibilityindicators.Helpers;
-using acidphantasm_accessibilityindicators.IndicatorUI;
+﻿using AccessibilityIndicators.Helpers;
+using AccessibilityIndicators.IndicatorUI;
 using Audio.Data;
 using CommonAssets.Scripts.Audio;
 using EFT;
@@ -8,9 +8,9 @@ using SPT.Reflection.Patching;
 using System.Reflection;
 using UnityEngine;
 
-namespace acidphantasm_accessibilityindicators.Patches
+namespace AccessibilityIndicators.Patches
 {
-    internal class PlayerDefaultPlayPatch : ModulePatch
+    internal class DefaultPlayPatch : ModulePatch
     {
         private static FieldInfo distanceInfo;
         protected override MethodBase GetTargetMethod()
@@ -24,17 +24,17 @@ namespace acidphantasm_accessibilityindicators.Patches
         {
             if (__instance == null 
                 || __instance.IsYourPlayer 
-                || !Indicators.enable
-                || (!__instance.IsAI && Utils.IsGroupedWithMainPlayer(__instance) && !Indicators.showTeammates)) return;
+                || !Indicators.Enable
+                || (!__instance.IsAI && __instance.IsGroupedWithMainPlayer() && !Indicators.ShowTeammates)) return;
 
-            Vector3 position = __instance.Position;
-            float distance = (float)distanceInfo.GetValue(__instance);
-            bool isTeammate = Utils.IsGroupedWithMainPlayer(__instance);
+            var position = __instance.Position;
+            var distance = (float)distanceInfo.GetValue(__instance);
+            var isTeammate = __instance.IsGroupedWithMainPlayer();
 
             Indicators.PrepareStep(movementState, position, distance, __instance.ProfileId, isTeammate);
         }
     }
-    internal class PlayerPlayStepSoundPatch : ModulePatch
+    internal class PlayStepSoundPatch : ModulePatch
     {
         private static FieldInfo distanceInfo;
         protected override MethodBase GetTargetMethod()
@@ -48,40 +48,43 @@ namespace acidphantasm_accessibilityindicators.Patches
         {
             if (__instance == null
                 || __instance.IsYourPlayer
-                || !Indicators.enable
-                || (!__instance.IsAI && Utils.IsGroupedWithMainPlayer(__instance) && !Indicators.showTeammates)) return;
+                || !Indicators.Enable
+                || (!__instance.IsAI && __instance.IsGroupedWithMainPlayer() && !Indicators.ShowTeammates)) return;
 
-            Vector3 position = __instance.Position;
-            float distance = (float)distanceInfo.GetValue(__instance);
-            EAudioMovementState eaudioMovementState = ((__instance.Pose == EPlayerPose.Duck) ? EAudioMovementState.Duck : EAudioMovementState.Run);
-            bool isTeammate = Utils.IsGroupedWithMainPlayer(__instance);
+            var position = __instance.Position;
+            var distance = (float)distanceInfo.GetValue(__instance);
+            var eaudioMovementState = ((__instance.Pose == EPlayerPose.Duck) ? EAudioMovementState.Duck : EAudioMovementState.Run);
+            var isTeammate = __instance.IsGroupedWithMainPlayer();
 
             Indicators.PrepareStep(eaudioMovementState, position, distance, __instance.ProfileId, isTeammate);
         }
     }
-    internal class PlayerMethod61Patch : ModulePatch
+    internal class PlayGearSoundPatch : ModulePatch
     {
         private static FieldInfo distanceInfo;
         protected override MethodBase GetTargetMethod()
         {
             distanceInfo = AccessTools.Field(typeof(Player), "_distance");
-            return AccessTools.Method(typeof(Player), nameof(Player.method_61));
+
+            return AccessTools.Method(
+            typeof(Player),
+            nameof(Player.PlayGearSound),
+            new[] { typeof(SoundBank), typeof(float) }
+            );
         }
 
         [PatchPostfix]
         static void PatchPostfix(Player __instance)
         {
-            if (__instance == null
-                || __instance.IsYourPlayer
-                || !Indicators.enable
-                || (!__instance.IsAI && Utils.IsGroupedWithMainPlayer(__instance) && !Indicators.showTeammates)) return;
+            if (__instance == null || __instance.IsYourPlayer || !Indicators.Enable || (!__instance.IsAI && __instance.IsGroupedWithMainPlayer() && !Indicators.ShowTeammates)) 
+                return;
 
             if (__instance.CurrentState.Name is EPlayerState.Sprint)
             {
-                Vector3 position = __instance.Position;
-                float distance = (float)distanceInfo.GetValue(__instance);
+                var position = __instance.Position;
+                var distance = (float)distanceInfo.GetValue(__instance);
                 var movementState = EAudioMovementState.Sprint;
-                bool isTeammate = Utils.IsGroupedWithMainPlayer(__instance);
+                var isTeammate = __instance.IsGroupedWithMainPlayer();
                 Indicators.PrepareStep(movementState, position, distance, __instance.ProfileId, isTeammate);
             }
         }

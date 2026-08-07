@@ -1,12 +1,10 @@
 ﻿using UnityEngine;
-using acidphantasm_accessibilityindicators.Helpers;
-using Audio.Data;
+using AccessibilityIndicators.Helpers;
 using Image = UnityEngine.UI.Image;
 using CommonAssets.Scripts.Audio;
-using EFT;
 
 
-namespace acidphantasm_accessibilityindicators.IndicatorUI
+namespace AccessibilityIndicators.IndicatorUI
 {
     internal class Indicators : MonoBehaviour
     {
@@ -22,84 +20,84 @@ namespace acidphantasm_accessibilityindicators.IndicatorUI
         private static float scaleStepMin = 0.05f;
         private static float scaleStepMax = 1.25f;
 
-        public static bool enableShots;
-        public static float maxShotDistance;
-        public static float fadeTimeShots;
-        public static Color enemyShotColour;
-        public static Color friendShotColour;
-        public static float indicatorOffset;
+        public static bool EnableShots;
+        public static float MaxShotDistance;
+        public static float FadeTimeShots;
+        public static Color EnemyShotColour;
+        public static Color FriendShotColour;
+        public static float IndicatorOffset;
 
-        public static bool enableSprintSteps;
-        public static float maxSprintDistance;
-        public static float fadeTimeSprint;
-        public static Color enemySprintColour;
-        public static Color friendSprintColour;
+        public static bool EnableSprintSteps;
+        public static float MaxSprintDistance;
+        public static float FadeTimeSprint;
+        public static Color EnemySprintColour;
+        public static Color FriendSprintColour;
 
-        public static bool enableWalkSteps;
-        public static float maxWalkDistance;
-        public static float fadeTimeWalk;
-        public static Color enemyWalkColour;
-        public static Color friendWalkColour;
+        public static bool EnableWalkSteps;
+        public static float MaxWalkDistance;
+        public static float FadeTimeWalk;
+        public static Color EnemyWalkColour;
+        public static Color FriendWalkColour;
 
-        public static bool enableSneakSteps;
-        public static float maxSneakDistance;
-        public static float fadeTimeSneak;
-        public static Color enemySneakColour;
-        public static Color friendSneakColour;
+        public static bool EnableSneakSteps;
+        public static float MaxSneakDistance;
+        public static float FadeTimeSneak;
+        public static Color EnemySneakColour;
+        public static Color FriendSneakColour;
 
-        public static bool enableVoicelines;
-        public static float maxVoiceDistance;
-        public static float fadeTimeVoice;
+        public static bool EnableVoicelines;
+        public static float MaxVoiceDistance;
+        public static float FadeTimeVoice;
 
-        public static bool enable;
-        public static bool showTeammates;
+        public static bool Enable;
+        public static bool ShowTeammates;
 
-        public static bool normalizeDistance;
-        public static float minNormalizedDistance;
-        public static float maxNormalizedDistance;
+        public static bool NormalizeDistance;
+        public static float MinNormalizedDistance;
+        public static float MaxNormalizedDistance;
 
         public static void PrepareVoice(Vector3 voicePosition, string id, bool isTeammate)
         {
-            var player = Utils.GetMainPlayer();
+            var player = Utility.GetMainPlayer();
             Transform camera = player.CameraPosition;
             Vector3 cameraPosition = camera.position;
 
-            float voiceDistance = Utils.GetDistance(cameraPosition, voicePosition);
-            if (voiceDistance > maxVoiceDistance) return;
+            float voiceDistance = Utility.GetDistance(cameraPosition, voicePosition);
+            if (voiceDistance > MaxVoiceDistance) return;
 
             Vector3 voiceDirection = voicePosition - cameraPosition;
 
-            float voiceAngle = Utils.GetAngle(voiceDirection);
-            float playerAngle = Utils.GetLookAngle(camera.eulerAngles);
+            float voiceAngle = Utility.GetAngle(voiceDirection);
+            float playerAngle = Utility.GetLookAngle(camera.eulerAngles);
 
             var realVoiceAngle = voiceAngle + playerAngle;
 
             if (realVoiceAngle > 360) realVoiceAngle = realVoiceAngle - 360;
 
-            if (voiceDistance <= maxVoiceDistance) DrawVoiceIndicator(realVoiceAngle, voiceDistance, id, isTeammate);
+            if (voiceDistance <= MaxVoiceDistance) DrawVoiceIndicator(realVoiceAngle, voiceDistance, id, isTeammate);
         }
         public static void PrepareShot(Vector3 shotPosition, string id, bool isTeammate)
         {
-            var player = Utils.GetMainPlayer();
+            var player = Utility.GetMainPlayer();
             Transform camera = player.CameraPosition;
             Vector3 cameraPosition = camera.position;
 
-            var shotDistance = Utils.GetDistance(cameraPosition, shotPosition);
-            if (shotDistance > maxShotDistance) return; 
+            var shotDistance = Utility.GetDistance(cameraPosition, shotPosition);
+            if (shotDistance > MaxShotDistance) return; 
 
             var shotDirection = shotPosition - cameraPosition;
 
-            var shotAngle = Utils.GetAngle(shotDirection);
-            var playerAngle = Utils.GetLookAngle(camera.eulerAngles);
+            var shotAngle = Utility.GetAngle(shotDirection);
+            var playerAngle = Utility.GetLookAngle(camera.eulerAngles);
             var realShotAngle = shotAngle + playerAngle;
 
-            VerticalityValues value = Utils.AboveOrBelowCheck(cameraPosition.y, shotPosition.y);
+            VerticalityValues value = Utility.AboveOrBelowCheck(cameraPosition.y, shotPosition.y);
             if (realShotAngle > 360) realShotAngle = realShotAngle - 360;
             DrawShotIndicator(realShotAngle, shotDistance, value, id, isTeammate);
         }
         public static void PrepareStep(EAudioMovementState movementState, Vector3 stepPosition, float distance, string id, bool isTeammate)
         {
-            var player = Utils.GetMainPlayer();
+            var player = Utility.GetMainPlayer();
             Transform camera = player.CameraPosition;
             Vector3 cameraPosition = camera.position;
             float maxDistance;
@@ -107,16 +105,16 @@ namespace acidphantasm_accessibilityindicators.IndicatorUI
             switch (movementState)
             {
                 case EAudioMovementState.Sprint:
-                    if (!enableSprintSteps) return;
-                    maxDistance = maxSprintDistance;
+                    if (!EnableSprintSteps) return;
+                    maxDistance = MaxSprintDistance;
                     break;
                 case EAudioMovementState.Run:
-                    if (!enableWalkSteps) return;
-                    maxDistance = maxWalkDistance;
+                    if (!EnableWalkSteps) return;
+                    maxDistance = MaxWalkDistance;
                     break;
                 case EAudioMovementState.Duck:
-                    if (!enableSneakSteps) return;
-                    maxDistance = maxSneakDistance;
+                    if (!EnableSneakSteps) return;
+                    maxDistance = MaxSneakDistance;
                     break;
                 default:
                     return;
@@ -125,12 +123,12 @@ namespace acidphantasm_accessibilityindicators.IndicatorUI
 
             var stepDirection = stepPosition - cameraPosition;
 
-            var stepAngle = Utils.GetAngle(stepDirection);
-            var playerAngle = Utils.GetLookAngle(camera.eulerAngles);
+            var stepAngle = Utility.GetAngle(stepDirection);
+            var playerAngle = Utility.GetLookAngle(camera.eulerAngles);
 
             var realStepAngle = stepAngle + playerAngle;
 
-            VerticalityValues value = Utils.AboveOrBelowCheck(cameraPosition.y, stepPosition.y);
+            VerticalityValues value = Utility.AboveOrBelowCheck(cameraPosition.y, stepPosition.y);
 
             if (realStepAngle > 360) realStepAngle = realStepAngle - 360;
 
@@ -144,13 +142,13 @@ namespace acidphantasm_accessibilityindicators.IndicatorUI
 
             Image image = voiceIndicator.GetComponent<Image>();
 
-            float newMinDistance = normalizeDistance ? minNormalizedDistance : 1f;
-            float newMaxDistance = normalizeDistance ? maxNormalizedDistance : maxVoiceDistance;
+            float newMinDistance = NormalizeDistance ? MinNormalizedDistance : 1f;
+            float newMaxDistance = NormalizeDistance ? MaxNormalizedDistance : MaxVoiceDistance;
 
-            float size = Utils.CustomInverseLerp(newMinDistance, newMaxDistance, scaleVoiceMax, scaleVoiceMin, voiceDistance);
-            float alpha = Utils.CustomInverseLerp(newMinDistance, newMaxDistance, 1f, 0.1f, voiceDistance);
+            float size = Utility.CustomInverseLerp(newMinDistance, newMaxDistance, scaleVoiceMax, scaleVoiceMin, voiceDistance);
+            float alpha = Utility.CustomInverseLerp(newMinDistance, newMaxDistance, 1f, 0.1f, voiceDistance);
             voiceIndicator.transform.localScale = new Vector3(size, size, 0);
-            pivotArm.transform.localPosition = new Vector3(pivotArm.transform.localPosition.x, originalVoiceY + indicatorOffset, pivotArm.transform.localPosition.z);
+            pivotArm.transform.localPosition = new Vector3(pivotArm.transform.localPosition.x, originalVoiceY + IndicatorOffset, pivotArm.transform.localPosition.z);
             image.color = new Color(image.color.r, image.color.g, image.color.b, alpha);
 
             pivotIndicator.transform.rotation = Quaternion.Euler(0, 0, voiceAngle);
@@ -158,7 +156,7 @@ namespace acidphantasm_accessibilityindicators.IndicatorUI
             pivotArm.SetActive(true);
             voiceIndicator.SetActive(true);
 
-            pivotIndicator.GetOrAddComponent<CoroutineHandler>().StartRestartFade(pivotIndicator, image, fadeTimeVoice);
+            pivotIndicator.GetOrAddComponent<CoroutineHandler>().StartRestartFade(pivotIndicator, image, FadeTimeVoice);
         }
         private static void DrawShotIndicator(float shotAngle, float shotDistance, VerticalityValues value, string accountID, bool isTeammate)
         {
@@ -198,16 +196,16 @@ namespace acidphantasm_accessibilityindicators.IndicatorUI
                     break;
             }
 
-            float newMinDistance = normalizeDistance ? minNormalizedDistance : 1f;
-            float newMaxDistance = normalizeDistance ? maxNormalizedDistance : maxShotDistance;
+            float newMinDistance = NormalizeDistance ? MinNormalizedDistance : 1f;
+            float newMaxDistance = NormalizeDistance ? MaxNormalizedDistance : MaxShotDistance;
 
-            float size = Utils.CustomInverseLerp(newMinDistance, newMaxDistance, scaleShotMax, scaleShotMin, shotDistance);
-            float alpha = Utils.CustomInverseLerp(newMinDistance, newMaxDistance, 1f, 0.1f, shotDistance);
+            float size = Utility.CustomInverseLerp(newMinDistance, newMaxDistance, scaleShotMax, scaleShotMin, shotDistance);
+            float alpha = Utility.CustomInverseLerp(newMinDistance, newMaxDistance, 1f, 0.1f, shotDistance);
             shotIndicator.transform.localScale = new Vector3(size, size, 0);
-            shotIndicator.transform.localPosition = new Vector3(shotIndicator.transform.localPosition.x, originalShotY + indicatorOffset, shotIndicator.transform.localPosition.z);
+            shotIndicator.transform.localPosition = new Vector3(shotIndicator.transform.localPosition.x, originalShotY + IndicatorOffset, shotIndicator.transform.localPosition.z);
 
-            if (isTeammate) image.color = new Color(friendShotColour.r, friendShotColour.g, friendShotColour.b, alpha);
-            else image.color = new Color(enemyShotColour.r, enemyShotColour.g, enemyShotColour.b, alpha);
+            if (isTeammate) image.color = new Color(FriendShotColour.r, FriendShotColour.g, FriendShotColour.b, alpha);
+            else image.color = new Color(EnemyShotColour.r, EnemyShotColour.g, EnemyShotColour.b, alpha);
 
 
             if (selectedVerticalityIndicator != null)
@@ -216,13 +214,13 @@ namespace acidphantasm_accessibilityindicators.IndicatorUI
                 verticalityPivotIndicator.SetActive(true);
                 selectedVerticalityArmPivot.SetActive(true);
                 selectedVerticalityIndicator.SetActive(true);
-                verticalityPivotIndicator.GetOrAddComponent<CoroutineHandler>().StartRestartFade(verticalityPivotIndicator, vertImage, fadeTimeShots);
+                verticalityPivotIndicator.GetOrAddComponent<CoroutineHandler>().StartRestartFade(verticalityPivotIndicator, vertImage, FadeTimeShots);
             }
 
             shotPivotIndicator.transform.rotation = Quaternion.Euler(0, 0, shotAngle);
             shotPivotIndicator.SetActive(true);
             shotIndicator.SetActive(true);
-            shotPivotIndicator.GetOrAddComponent<CoroutineHandler>().StartRestartFade(shotPivotIndicator, image, fadeTimeShots);
+            shotPivotIndicator.GetOrAddComponent<CoroutineHandler>().StartRestartFade(shotPivotIndicator, image, FadeTimeShots);
         }
         private static void DrawStepIndicator(float stepAngle, float stepDistance, VerticalityValues value, EAudioMovementState movementState, string accountID, bool isTeammate)
         {
@@ -240,7 +238,7 @@ namespace acidphantasm_accessibilityindicators.IndicatorUI
             Image image = selectedStepIndicator.GetComponent<Image>();
 
             float fadeTime;
-            float newMinDistance = normalizeDistance ? minNormalizedDistance : 1f;
+            float newMinDistance = NormalizeDistance ? MinNormalizedDistance : 1f;
             float newMaxDistance;
 
             switch (value)
@@ -269,39 +267,39 @@ namespace acidphantasm_accessibilityindicators.IndicatorUI
             switch (movementState)
             {
                 case EAudioMovementState.Sprint:
-                    fadeTime = fadeTimeSprint;
-                    newMaxDistance = normalizeDistance ? maxNormalizedDistance : maxSprintDistance;
+                    fadeTime = FadeTimeSprint;
+                    newMaxDistance = NormalizeDistance ? MaxNormalizedDistance : MaxSprintDistance;
                     break;
                 case EAudioMovementState.Run:
-                    fadeTime = fadeTimeWalk;
-                    newMaxDistance = normalizeDistance ? maxNormalizedDistance : maxWalkDistance;
+                    fadeTime = FadeTimeWalk;
+                    newMaxDistance = NormalizeDistance ? MaxNormalizedDistance : MaxWalkDistance;
                     break;
                 case EAudioMovementState.Duck:
-                    fadeTime = fadeTimeSneak;
-                    newMaxDistance = normalizeDistance ? maxNormalizedDistance : maxSneakDistance;
+                    fadeTime = FadeTimeSneak;
+                    newMaxDistance = NormalizeDistance ? MaxNormalizedDistance : MaxSneakDistance;
                     break;
                 default:
                     return;
             }
 
-            float size = Utils.CustomInverseLerp(newMinDistance, newMaxDistance, scaleStepMax, scaleStepMin, stepDistance);
-            float alpha = Utils.CustomInverseLerp(newMinDistance, newMaxDistance, 1f, 0.1f, stepDistance);
+            float size = Utility.CustomInverseLerp(newMinDistance, newMaxDistance, scaleStepMax, scaleStepMin, stepDistance);
+            float alpha = Utility.CustomInverseLerp(newMinDistance, newMaxDistance, 1f, 0.1f, stepDistance);
             selectedStepIndicator.transform.localScale = new Vector3(size, size, 0);
-            selectedStepIndicator.transform.localPosition = new Vector3(selectedStepIndicator.transform.localPosition.x, originalStepY + indicatorOffset, selectedStepIndicator.transform.localPosition.z);
+            selectedStepIndicator.transform.localPosition = new Vector3(selectedStepIndicator.transform.localPosition.x, originalStepY + IndicatorOffset, selectedStepIndicator.transform.localPosition.z);
 
             switch (movementState)
             {
                 case EAudioMovementState.Sprint:
-                    if (isTeammate) image.color = new Color(friendSprintColour.r, friendSprintColour.g, friendSprintColour.b, alpha);
-                    else image.color = new Color(enemySprintColour.r, enemySprintColour.g, enemySprintColour.b, alpha);
+                    if (isTeammate) image.color = new Color(FriendSprintColour.r, FriendSprintColour.g, FriendSprintColour.b, alpha);
+                    else image.color = new Color(EnemySprintColour.r, EnemySprintColour.g, EnemySprintColour.b, alpha);
                     break;
                 case EAudioMovementState.Duck:
-                    if (isTeammate) image.color = new Color(friendSneakColour.r, friendSneakColour.g, friendSneakColour.b, alpha);
-                    else image.color = new Color(enemySneakColour.r, enemySneakColour.g, enemySneakColour.b, alpha);
+                    if (isTeammate) image.color = new Color(FriendSneakColour.r, FriendSneakColour.g, FriendSneakColour.b, alpha);
+                    else image.color = new Color(EnemySneakColour.r, EnemySneakColour.g, EnemySneakColour.b, alpha);
                     break;
                 case EAudioMovementState.Run:
-                    if (isTeammate) image.color = new Color(friendWalkColour.r, friendWalkColour.g, friendWalkColour.b, alpha);
-                    else image.color = new Color(enemyWalkColour.r, enemyWalkColour.g, enemyWalkColour.b, alpha);
+                    if (isTeammate) image.color = new Color(FriendWalkColour.r, FriendWalkColour.g, FriendWalkColour.b, alpha);
+                    else image.color = new Color(EnemyWalkColour.r, EnemyWalkColour.g, EnemyWalkColour.b, alpha);
                     break;
                 default:
                     return;
@@ -309,7 +307,7 @@ namespace acidphantasm_accessibilityindicators.IndicatorUI
 
             if (selectedVerticalityIndicator != null)
             {
-                selectedVerticalityArmPivot.transform.localPosition = new Vector3(selectedVerticalityArmPivot.transform.localPosition.x, originalVerticalityY + indicatorOffset, selectedVerticalityArmPivot.transform.localPosition.z);
+                selectedVerticalityArmPivot.transform.localPosition = new Vector3(selectedVerticalityArmPivot.transform.localPosition.x, originalVerticalityY + IndicatorOffset, selectedVerticalityArmPivot.transform.localPosition.z);
                 verticalityPivotIndicator.transform.rotation = Quaternion.Euler(0, 0, stepAngle);
                 verticalityPivotIndicator.SetActive(true);
                 selectedVerticalityArmPivot.SetActive(true);

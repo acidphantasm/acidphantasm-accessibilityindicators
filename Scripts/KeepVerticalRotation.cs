@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace acidphantasm_accessibilityindicators.Scripts
+namespace AccessibilityIndicators.Scripts
 {
 
     internal class KeepVerticalRotation : MonoBehaviour

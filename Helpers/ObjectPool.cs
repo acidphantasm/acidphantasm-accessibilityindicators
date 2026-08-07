@@ -1,18 +1,18 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using acidphantasm_accessibilityindicators.IndicatorUI;
-using acidphantasm_accessibilityindicators.Scripts;
+using AccessibilityIndicators.IndicatorUI;
+using AccessibilityIndicators.Scripts;
 
-namespace acidphantasm_accessibilityindicators.Helpers
+namespace AccessibilityIndicators.Helpers
 {
 
     public class ObjectPool : MonoBehaviour
     {
         public static ObjectPool SharedInstance;
-        public static List<GameObject> stepIndicators;
-        public static List<GameObject> shotIndicators;
-        public static List<GameObject> voiceIndicators;
-        public static List<GameObject> verticalityIndicators;
+        private static List<GameObject> stepIndicators;
+        private static List<GameObject> shotIndicators;
+        private static List<GameObject> voiceIndicators;
+        private static List<GameObject> verticalityIndicators;
 
         void Awake()
         {
@@ -75,17 +75,17 @@ namespace acidphantasm_accessibilityindicators.Helpers
 
         public static GameObject GetPooledStepObject(string ownerID = "none")
         {
-            var amountToPool = Panel.poolObjectsSteps;
+            var amountToPool = Panel.PoolObjectsSteps;
             for (int i = 0; i < amountToPool; i++)
             {
                 ObjectIDInfo info = stepIndicators[i].GetComponent<ObjectIDInfo>();
-                if (info._OwnerID == ownerID)
+                if (info.ownerID == ownerID)
                 {
                     return stepIndicators[i];
                 }
                 if (!stepIndicators[i].activeInHierarchy)
                 {
-                    info._OwnerID = ownerID;
+                    info.ownerID = ownerID;
                     return stepIndicators[i];
                 }
             }
@@ -94,17 +94,17 @@ namespace acidphantasm_accessibilityindicators.Helpers
 
         public static GameObject GetPooledVoiceObject(string ownerID = "none")
         {
-            var amountToPool = Panel.poolObjectsVoice;
+            var amountToPool = Panel.PoolObjectsVoice;
             for (int i = 0; i < amountToPool; i++)
             {
                 ObjectIDInfo info = voiceIndicators[i].GetComponent<ObjectIDInfo>();
-                if (info._OwnerID == ownerID)
+                if (info.ownerID == ownerID)
                 {
                     return voiceIndicators[i];
                 }
                 if (!voiceIndicators[i].activeInHierarchy)
                 {
-                    info._OwnerID = ownerID;
+                    info.ownerID = ownerID;
                     return voiceIndicators[i];
                 }
             }
@@ -113,17 +113,17 @@ namespace acidphantasm_accessibilityindicators.Helpers
 
         public static GameObject GetPooledShotObject(string ownerID = "none")
         {
-            var amountToPool = Panel.poolObjectsShots;
+            var amountToPool = Panel.PoolObjectsShots;
             for (int i = 0; i < amountToPool; i++)
             {
                 ObjectIDInfo info = shotIndicators[i].GetComponent<ObjectIDInfo>();
-                if (info._OwnerID == ownerID)
+                if (info.ownerID == ownerID)
                 {
                     return shotIndicators[i];
                 }
                 if (!shotIndicators[i].activeInHierarchy)
                 {
-                    info._OwnerID = ownerID;
+                    info.ownerID = ownerID;
                     return shotIndicators[i];
                 }
             }
@@ -132,17 +132,17 @@ namespace acidphantasm_accessibilityindicators.Helpers
 
         public static GameObject GetPooledVerticalityObject(string ownerID = "none")
         {
-            var amountToPool = Panel.poolObjectsVerticality;
+            var amountToPool = Panel.PoolObjectsVerticality;
             for (int i = 0; i < amountToPool; i++)
             {
                 ObjectIDInfo info = verticalityIndicators[i].GetComponent<ObjectIDInfo>();
-                if (info._OwnerID == ownerID)
+                if (info.ownerID == ownerID)
                 {
                     return verticalityIndicators[i];
                 }
                 if (!verticalityIndicators[i].activeInHierarchy)
                 {
-                    info._OwnerID = ownerID;
+                    info.ownerID = ownerID;
                     return verticalityIndicators[i];
                 }
             }

@@ -3,10 +3,10 @@ using HarmonyLib;
 using System.Reflection;
 using UnityEngine;
 using EFT;
-using acidphantasm_accessibilityindicators.IndicatorUI;
-using acidphantasm_accessibilityindicators.Helpers;
+using AccessibilityIndicators.IndicatorUI;
+using AccessibilityIndicators.Helpers;
 
-namespace acidphantasm_accessibilityindicators.Patches
+namespace AccessibilityIndicators.Patches
 {
     internal class FirearmControllerPatch : ModulePatch
     {
@@ -23,14 +23,11 @@ namespace acidphantasm_accessibilityindicators.Patches
         {
             if (__instance == null) return;
 
-            Player player = (Player)playerInfo.GetValue(__instance);
+            var player = (Player)playerInfo.GetValue(__instance);
 
-            if (player.IsYourPlayer
-                || !Indicators.enable
-                || !Indicators.enableShots
-                || (!player.IsAI && Utils.IsGroupedWithMainPlayer(player) && !Indicators.showTeammates)) return;
+            if (player.IsYourPlayer || !Indicators.Enable || !Indicators.EnableShots || (!player.IsAI && player.IsGroupedWithMainPlayer() && !Indicators.ShowTeammates)) return;
 
-            bool isTeammate = Utils.IsGroupedWithMainPlayer(player);
+            var isTeammate = player.IsGroupedWithMainPlayer();
 
             Indicators.PrepareShot(shotPosition, player.ProfileId, isTeammate);
         }

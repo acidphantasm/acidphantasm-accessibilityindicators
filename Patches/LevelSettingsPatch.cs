@@ -1,9 +1,9 @@
-﻿using acidphantasm_accessibilityindicators.IndicatorUI;
+﻿using AccessibilityIndicators.IndicatorUI;
 using HarmonyLib;
 using SPT.Reflection.Patching;
 using System.Reflection;
 
-namespace acidphantasm_accessibilityindicators.Patches
+namespace AccessibilityIndicators.Patches
 {
     internal class LevelSettingsPatch : ModulePatch
     {
@@ -17,8 +17,8 @@ namespace acidphantasm_accessibilityindicators.Patches
         {
             if (__instance == null) return;
 
-            Panel.northVector = __instance.NorthVector;
-            Panel.northDirection = __instance.NorthDirection;
+            Panel.NorthVector = __instance.NorthVector;
+            Panel.NorthDirection = __instance.NorthDirection;
         }
     }
 }

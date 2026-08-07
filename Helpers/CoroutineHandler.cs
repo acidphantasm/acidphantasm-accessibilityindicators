@@ -3,18 +3,18 @@ using UnityEngine;
 using Color = UnityEngine.Color;
 using Image = UnityEngine.UI.Image;
 
-namespace acidphantasm_accessibilityindicators.Helpers
+namespace AccessibilityIndicators.Helpers
 {
     public class CoroutineHandler : MonoBehaviour
     {
-        private Coroutine coroutineHandle;
+        private Coroutine _coroutineHandle;
         public void StartRestartFade(GameObject obj, Image img, float fadeTime)
         {
-            this.RestartCoroutine(RunFade(obj, img, fadeTime), ref coroutineHandle);
+            this.RestartCoroutine(RunFade(obj, img, fadeTime), ref _coroutineHandle);
         }
 
-        private YieldInstruction fadeInstruction = new YieldInstruction();
-        public IEnumerator RunFade(GameObject obj, Image img, float fadeTime)
+        private readonly YieldInstruction _fadeInstruction = new YieldInstruction();
+        private IEnumerator RunFade(GameObject obj, Image img, float fadeTime)
         {
             if (obj != null)
             {
@@ -23,7 +23,7 @@ namespace acidphantasm_accessibilityindicators.Helpers
 
                 while (elapsedTime < fadeTime)
                 {
-                    yield return fadeInstruction;
+                    yield return _fadeInstruction;
                     elapsedTime += Time.deltaTime;
                     currentColor.a = 1.0f - Mathf.Clamp01(elapsedTime / fadeTime);
                     img.color = currentColor;

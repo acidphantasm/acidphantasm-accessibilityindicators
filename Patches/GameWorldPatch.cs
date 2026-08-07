@@ -2,10 +2,10 @@
 using HarmonyLib;
 using SPT.Reflection.Patching;
 using System.Reflection;
-using acidphantasm_accessibilityindicators.IndicatorUI;
-using acidphantasm_accessibilityindicators.Scripts;
+using AccessibilityIndicators.IndicatorUI;
+using AccessibilityIndicators.Scripts;
 
-namespace acidphantasm_accessibilityindicators.Patches
+namespace AccessibilityIndicators.Patches
 {
     internal class GameWorldOnGameStartedPatch : ModulePatch
     {
@@ -17,7 +17,8 @@ namespace acidphantasm_accessibilityindicators.Patches
         [PatchPostfix]
         public static void PatchPostfix()
         {
-            if (Panel.IndicatorHUD == null) Panel.CreateHUD();
+            if (Panel.IndicatorHUD == null) 
+                Panel.CreateHUD();
         }
     }
 
@@ -31,8 +32,12 @@ namespace acidphantasm_accessibilityindicators.Patches
         [PatchPostfix]
         public static void PatchPostFix(IPlayer iPlayer)
         {
-            Player player = iPlayer as Player;
-            if (player.IsYourPlayer && Panel.IndicatorHUD != null) Panel.Dispose();
+            var player = iPlayer as Player;
+            if (player == null) 
+                return;
+            
+            if (player.IsYourPlayer && Panel.IndicatorHUD != null) 
+                Panel.Dispose();
         }
     }
 }

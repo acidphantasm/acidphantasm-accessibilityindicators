@@ -1,32 +1,32 @@
-﻿using acidphantasm_accessibilityindicators.Helpers;
-using acidphantasm_accessibilityindicators.IndicatorUI;
+﻿using AccessibilityIndicators.Helpers;
+using AccessibilityIndicators.IndicatorUI;
 using EFT;
 using HarmonyLib;
 using SPT.Reflection.Patching;
 using System.Reflection;
 
-namespace acidphantasm_accessibilityindicators.Patches
+namespace AccessibilityIndicators.Patches
 {
     internal class PhraseSpeakerClassPatch : ModulePatch
     {
         protected override MethodBase GetTargetMethod()
         {
-            return AccessTools.Method(typeof(PhraseSpeakerClass), nameof(PhraseSpeakerClass.Play));
+            return AccessTools.Method(typeof(BaseSpeaker), nameof(BaseSpeaker.Play));
         }
 
         [PatchPostfix]
-        static void PatchPostfix(PhraseSpeakerClass __instance, EPhraseTrigger trigger, bool demand)
+        static void PatchPostfix(BaseSpeaker __instance, EPhraseTrigger trigger)
         {
-            Player player = Utils.GetProfileByID(__instance.Id);
+            Player player = Utility.GetProfileByID(__instance.Id);
 
             if (player == null
                 || player.IsYourPlayer
                 || System.Enum.IsDefined(typeof(BannedPhrases), trigger.ToString())
-                || !Indicators.enable
-                || !Indicators.enableVoicelines
-                || (!player.IsAI && Utils.IsGroupedWithMainPlayer(player) && !Indicators.showTeammates)) return;
+                || !Indicators.Enable
+                || !Indicators.EnableVoicelines
+                || (!player.IsAI && player.IsGroupedWithMainPlayer() && !Indicators.ShowTeammates)) return;
 
-            bool isTeammate = Utils.IsGroupedWithMainPlayer(player);
+            var isTeammate = player.IsGroupedWithMainPlayer();
             Indicators.PrepareVoice(player.Position, player.ProfileId, isTeammate);
 
         }

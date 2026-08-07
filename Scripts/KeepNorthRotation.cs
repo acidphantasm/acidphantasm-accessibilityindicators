@@ -1,9 +1,10 @@
-﻿using acidphantasm_accessibilityindicators.Helpers;
-using acidphantasm_accessibilityindicators.IndicatorUI;
+﻿using AccessibilityIndicators.IndicatorUI;
 using UnityEngine;
 
-namespace acidphantasm_accessibilityindicators.Scripts
+namespace AccessibilityIndicators.Scripts
 {
+    using Helpers;
+
     internal class KeepNorthRotation : MonoBehaviour
     {
         private bool isActuallyActive;
@@ -17,11 +18,11 @@ namespace acidphantasm_accessibilityindicators.Scripts
         {
             if (isActuallyActive)
             {
-                var player = Utils.GetMainPlayer();
+                var player = Utility.GetMainPlayer();
                 Transform camera = player.CameraPosition;
                 float lookDirection = camera.transform.rotation.eulerAngles.y;
 
-                Panel.HUDCenterPoint.transform.rotation = Quaternion.Euler(0, 0, lookDirection + Panel.northDirection);
+                Panel.HUDCenterPoint.transform.rotation = Quaternion.Euler(0, 0, lookDirection + Panel.NorthDirection);
             }
         }
 

@@ -1,9 +1,11 @@
 ﻿using UnityEngine;
 
-namespace acidphantasm_accessibilityindicators.Helpers
+namespace AccessibilityIndicators.Helpers
 {
+    using UnityEngine.Serialization;
+
     internal class ObjectIDInfo: MonoBehaviour
     {
-        public string _OwnerID = "none";
+        [FormerlySerializedAs("_OwnerID")] public string ownerID = "none";
     }
 }

@@ -1,9 +1,11 @@
-﻿using acidphantasm_accessibilityindicators.Helpers;
-using acidphantasm_accessibilityindicators.Scripts;
+﻿using AccessibilityIndicators.Helpers;
+using AccessibilityIndicators.Scripts;
 using UnityEngine;
 
-namespace acidphantasm_accessibilityindicators.IndicatorUI
+namespace AccessibilityIndicators.IndicatorUI
 {
+    using System;
+
     internal class Panel : MonoBehaviour
     {
         public static GameObject IndicatorHUDPrefab;
@@ -16,13 +18,13 @@ namespace acidphantasm_accessibilityindicators.IndicatorUI
         public static GameObject IndicatorHUD;
         public static GameObject HUDCenterPoint;
 
-        public static Vector3 northVector;
-        public static float northDirection;
+        public static Vector3 NorthVector;
+        public static float NorthDirection;
 
-        public static int poolObjectsShots;
-        public static int poolObjectsSteps;
-        public static int poolObjectsVoice;
-        public static int poolObjectsVerticality;
+        public static int PoolObjectsShots;
+        public static int PoolObjectsSteps;
+        public static int PoolObjectsVoice;
+        public static int PoolObjectsVerticality;
 
         private static KeepNorthRotation keepNorthRotationScript;
 
@@ -30,15 +32,23 @@ namespace acidphantasm_accessibilityindicators.IndicatorUI
         {
             if (IndicatorHUD != null) return;
 
-            IndicatorHUD = Instantiate(IndicatorHUDPrefab);
-            HUDCenterPoint = IndicatorHUD.transform.GetChild(0).gameObject;
-            ObjectPool.PoolShotIndicators(ShotPivotPrefab, HUDCenterPoint, poolObjectsShots);
-            ObjectPool.PoolStepIndicators(StepPivotPrefab, HUDCenterPoint, poolObjectsSteps);
-            ObjectPool.PoolVoiceIndicators(VoicePivotPrefab, HUDCenterPoint, poolObjectsVoice);
-            ObjectPool.PoolVerticalityIndicators(VerticalityPivotPrefab, HUDCenterPoint, poolObjectsVerticality);
-            IndicatorHUD.AddComponent<KeepNorthRotation>();
-            keepNorthRotationScript = IndicatorHUD.GetOrAddComponent<KeepNorthRotation>();
-            Plugin.LogSource.LogInfo("[Accessibility Indicators] Creating HUD");
+            try
+            {
+                IndicatorHUD = Instantiate(IndicatorHUDPrefab);
+                HUDCenterPoint = IndicatorHUD.transform.GetChild(0).gameObject;
+                ObjectPool.PoolShotIndicators(ShotPivotPrefab, HUDCenterPoint, PoolObjectsShots);
+                ObjectPool.PoolStepIndicators(StepPivotPrefab, HUDCenterPoint, PoolObjectsSteps);
+                ObjectPool.PoolVoiceIndicators(VoicePivotPrefab, HUDCenterPoint, PoolObjectsVoice);
+                ObjectPool.PoolVerticalityIndicators(VerticalityPivotPrefab, HUDCenterPoint, PoolObjectsVerticality);
+                IndicatorHUD.AddComponent<KeepNorthRotation>();
+                keepNorthRotationScript = IndicatorHUD.GetOrAddComponent<KeepNorthRotation>();
+                Plugin.LogSource.LogInfo("[Accessibility Indicators] Creating HUD");
+            }
+            catch (Exception ex)
+            {
+                Plugin.LogSource.LogInfo("[Accessibility Indicators] Failed to create HUD" + ex);
+                throw;
+            }
         }
 
         public static void Dispose()
